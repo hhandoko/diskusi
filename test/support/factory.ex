@@ -1,5 +1,5 @@
 ###
-# File     : router.ex
+# File     : factory.ex
 # License  :
 #   Copyright (c) 2017 Herdy Handoko
 #
@@ -15,30 +15,21 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 ###
-defmodule Diskusi.Router do
-  use Diskusi.Web, :router
+defmodule Diskusi.Factory do
+  @moduledoc """
+  Factory module to help generate test data.
 
-  pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-  end
+  Based on the [ex_machina](https://github.com/thoughtbot/ex_machina) library.
+  """
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
+  use ExMachina.Ecto, repo: Diskusi.Repo
 
-  scope "/", Diskusi do
-    pipe_through :browser # Use the default browser stack
-
-    get "/", PageController, :index
-  end
-
-  scope "/api", Diskusi do
-    pipe_through :api
-
-    resources "/comments", CommentController, only: [:index, :show]
+  @doc """
+  Create a new comment fixture for testing.
+  """
+  def comment_factory do
+    %Diskusi.Comment{
+      text: "Hello world!"
+    }
   end
 end

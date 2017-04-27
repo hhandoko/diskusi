@@ -1,5 +1,5 @@
 ###
-# File     : router.ex
+# File     : 20170427_create_comment.exs
 # License  :
 #   Copyright (c) 2017 Herdy Handoko
 #
@@ -15,30 +15,18 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 ###
-defmodule Diskusi.Router do
-  use Diskusi.Web, :router
+defmodule Diskusi.Repo.Migrations.CreateComment do
+  @moduledoc """
+  Create comment table migration script.
+  """
 
-  pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-  end
+  use Ecto.Migration
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
+  def change do
+    create table(:comment) do
+      add :text, :string
 
-  scope "/", Diskusi do
-    pipe_through :browser # Use the default browser stack
-
-    get "/", PageController, :index
-  end
-
-  scope "/api", Diskusi do
-    pipe_through :api
-
-    resources "/comments", CommentController, only: [:index, :show]
+      timestamps()
+    end
   end
 end

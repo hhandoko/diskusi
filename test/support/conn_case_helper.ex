@@ -1,5 +1,5 @@
 ###
-# File     : router.ex
+# File     : conn_case_helper.ex
 # License  :
 #   Copyright (c) 2017 Herdy Handoko
 #
@@ -15,30 +15,23 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 ###
-defmodule Diskusi.Router do
-  use Diskusi.Web, :router
+defmodule Diskusi.ConnCaseHelper do
 
-  pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
+  @doc """
+  Render template for the given view as JSON.
+  """
+  def render_json(view, template, assigns) do
+    template
+    |> view.render(assigns)
+    |> format_json
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
-  scope "/", Diskusi do
-    pipe_through :browser # Use the default browser stack
-
-    get "/", PageController, :index
-  end
-
-  scope "/api", Diskusi do
-    pipe_through :api
-
-    resources "/comments", CommentController, only: [:index, :show]
+  @doc """
+  Serialize and deserialize the JSON data.
+  """
+  defp format_json(data) do
+    data
+    |> Poison.encode!
+    |> Poison.decode!
   end
 end

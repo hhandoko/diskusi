@@ -1,5 +1,5 @@
 ###
-# File     : router.ex
+# File     : comment_controller.ex
 # License  :
 #   Copyright (c) 2017 Herdy Handoko
 #
@@ -15,30 +15,31 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 ###
-defmodule Diskusi.Router do
-  use Diskusi.Web, :router
+defmodule Diskusi.CommentController do
+  @moduledoc """
+  Comment controller.
+  """
 
-  pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
+  use Diskusi.Web, :controller
+  alias Diskusi.Comment
+
+  @doc """
+  GET `/api/comments`
+
+  Returns all comments result as JSON.
+  """
+  def index(conn, _params) do
+    comments = Repo.all(Comment)
+    conn |> render("index.json", comments: comments)
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
+  @doc """
+  GET `/api/comments/:id
 
-  scope "/", Diskusi do
-    pipe_through :browser # Use the default browser stack
-
-    get "/", PageController, :index
-  end
-
-  scope "/api", Diskusi do
-    pipe_through :api
-
-    resources "/comments", CommentController, only: [:index, :show]
+  Returns a comment result as JSON for the given ID.
+  """
+  def show(conn, %{"id" => id}) do
+    comment = Repo.get!(Comment, id)
+    conn |> render("show.json", comment: comment)
   end
 end
