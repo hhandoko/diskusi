@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.15.0">
+    <title>About – Diskusi v0.0.1</title>
+    <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
+    
+    <script src="dist/sidebar_items-5c19d02840.js"></script>
+  </head>
+  <body data-type="extras">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+<div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="Diskusi.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Diskusi
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v0.0.1
+      </h2>
+    </div>
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+<p><a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-brightgreen.svg" alt="License"/></a></p>
+<h1>Diskusi</h1>
+<p><code class="inline">diskusi</code> is a comments system and discussion board inspired by Disqus.</p>
+<h2 id="prerequisites" class="section-heading">
+  <a href="#prerequisites" class="hover-link"><i class="icon-link"></i></a>
+  Prerequisites
+</h2>
+
+<h3>Develop and Compile Dependencies</h3>
+<p>The following binaries / libraries need to be installed in order to compile the web application.
+The version numbers denotes the specific version used to develop the web application, it may or may not work under other minor versions:</p>
+<ul>
+<li><a href="http://elixir-lang.org" title="">Elixir Lang</a> v1.3.x
+</li>
+<li><a href="http://www.phoenixframework.org" title="">Phoenix Framework</a> v1.2.x
+</li>
+<li><a href="https://nodejs.org" title="">Node.js</a> v7.5.x
+</li>
+<li><a href="https://www.npmjs.com" title="">npm</a> v4.1.x
+</li>
+<li><a href="https://www.ruby-lang.org" title="">Ruby</a> v2.2.x
+</li>
+<li><a href="http://sass-lang.com" title="">Sass</a> v3.4.x
+</li>
+</ul>
+<h3>Services (Database) Dependencies</h3>
+<p>The following applications need to be installed in order to provision an Ubuntu guest VM (1 core, 1GB RAM) which will contain the necessary services:</p>
+<ul>
+<li><a href="https://www.virtualbox.org" title="">Oracle VM VirtualBox</a> v5.1.x
+</li>
+<li><a href="https://www.vagrantup.com" title="">Vagrant</a> v1.9.x
+</li>
+</ul>
+<p>The following Vagrant plugin is not mandatory, but help speed up subsequent box provisioning by caching common packages:</p>
+<ul>
+<li><a href="https://github.com/fgrehm/vagrant-cachier" title="">vagrant-cachier</a>
+</li>
+</ul>
+<p>Successful Vagrant provisioning will enable the following services to be available within a guest VM:</p>
+<ul>
+<li><a href="http://www.postgresql.org" title="">PostgreSQL</a> v9.6.x
+</li>
+</ul>
+<h2 id="setup-steps" class="section-heading">
+  <a href="#setup-steps" class="hover-link"><i class="icon-link"></i></a>
+  Setup Steps
+</h2>
+
+<ol>
+<li><p>Configure the services:</p>
+<ol>
+<li>Run <code class="inline">vagrant up</code>
+</li>
+</ol>
+</li>
+<li><p>Install dependencies:</p>
+<ol>
+<li>Install Phoenix dependencies with <code class="inline">mix deps.get</code>
+</li>
+<li>Install npm dependencies with <code class="inline">npm install</code>
+</li>
+</ol>
+</li>
+<li><p>Data store setup:</p>
+<ol>
+<li>Create database with <code class="inline">mix ecto.create</code>
+</li>
+<li>Migrate database with <code class="inline">mix ecto.migrate</code>
+</li>
+<li>Seed the database with <code class="inline">mix run priv/repo/seeds.exs</code>
+</li>
+</ol>
+</li>
+<li><p>Run tests:</p>
+<ol>
+<li>Run Elixir tests with <code class="inline">mix test</code>
+</li>
+</ol>
+</li>
+<li>Start application with <code class="inline">mix phoenix.server</code>
+</li>
+</ol>
+<p>Now you can visit <a href="http://localhost:4000"><code class="inline">localhost:4000</code></a> from your browser.</p>
+<p><em>NOTE: Run <code class="inline">mix docs</code> to generate doc-comment documentation.</em></p>
+<h2 id="contributing" class="section-heading">
+  <a href="#contributing" class="hover-link"><i class="icon-link"></i></a>
+  Contributing
+</h2>
+
+<p>We follow the “<a href="http://nvie.com/posts/a-successful-git-branching-model/" title="">feature-branch</a>” Git workflow.</p>
+<ol>
+<li><p>Commit changes to a branch in your fork (use <code class="inline">snake_case</code> convention):</p>
+<ul>
+<li>For technical chores, use <code class="inline">chore/</code> prefix followed by the short description, e.g. <code class="inline">chore/do_this_chore</code>
+</li>
+<li>For new features, use <code class="inline">feature/</code> prefix followed by the feature name, e.g. <code class="inline">feature/feature_name</code>
+</li>
+<li>For bug fixes, use <code class="inline">bug/</code> prefix followed by the short description, e.g. <code class="inline">bug/fix_this_bug</code>
+</li>
+</ul>
+</li>
+<li>Rebase or merge from “upstream”
+</li>
+<li>Submit a PR “upstream” to <code class="inline">develop</code> branch with your changes
+</li>
+</ol>
+<p>Please read <a href="https://github.com/hhandoko/diskusi/blob/master/CONTRIBUTING.md" title="">CONTRIBUTING</a> for more details.</p>
+<h2 id="license" class="section-heading">
+  <a href="#license" class="hover-link"><i class="icon-link"></i></a>
+  License
+</h2>
+
+<p><code class="inline">diskusi</code> is released under the Apache Version 2.0 License. See the <a href="https://github.com/hhandoko/diskusi/blob/master/LICENSE.txt" title="">LICENSE</a> file for further details.</p>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.15.0),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-372682077e.js"></script>
+  </body>
+</html>
+
