@@ -25,7 +25,7 @@ defmodule Diskusi.CommentControllerTest do
   alias Diskusi.CommentView
   alias Diskusi.ErrorView
 
-  test "#index renders a list comments" do
+  test "`GET /api/comments` renders a list comments" do
     comment  = insert(:comment)
     conn     = build_conn()
     conn     = get(conn, comment_path(conn, :index))
@@ -36,7 +36,7 @@ defmodule Diskusi.CommentControllerTest do
     assert expected == response
   end
 
-  test "#index without results render an empty results response" do
+  test "`GET /api/comments` without results renders an empty results response" do
     conn     = build_conn()
     conn     = get(conn, comment_path(conn, :index))
 
@@ -46,7 +46,7 @@ defmodule Diskusi.CommentControllerTest do
     assert expected == response
   end
 
-  test "#show renders a single comment" do
+  test "`GET /api/comments/:id` renders a single comment" do
     comment  = insert(:comment)
     conn     = build_conn()
     conn     = get(conn, comment_path(conn, :show, comment))
@@ -57,7 +57,7 @@ defmodule Diskusi.CommentControllerTest do
     assert expected == response
   end
 
-  test "#show without results render an empty result response with 404 status code" do
+  test "`GET /api/comments/:id` without results renders an empty result response with 404 status code" do
     comment  = %Comment{build(:comment) | id: 0}
     conn     = build_conn()
     conn     = get(conn, comment_path(conn, :show, comment))

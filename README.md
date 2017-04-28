@@ -12,9 +12,10 @@ The following binaries / libraries need to be installed in order to compile the 
 The version numbers denotes the specific version used to develop the web application, it may or may not work under other minor versions:
 
   - [Elixir Lang] v1.3.x
+  - [Elm Lang] v0.18.x
   - [Phoenix Framework] v1.2.x
   - [Node.js] v7.5.x
-  - [npm] v4.1.x
+  - [npm] v4.5.x
   - [Ruby] v2.2.x
   - [Sass] v3.4.x
 
@@ -46,11 +47,12 @@ Successful Vagrant provisioning will enable the following services to be availab
      1. Seed the database with `mix run priv/repo/seeds.exs`
   1. Run tests:
      1. Run Elixir tests with `mix test`
+     1. Run JavaScript and Elm tests with `npm test`
   1. Start application with `mix phoenix.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-*NOTE: Run `mix docs` to generate doc-comment documentation.*
+*NOTE: Run `mix docs` to generate (updated) doc-comment documentation.*
 
 ## Contributing
 
@@ -71,6 +73,7 @@ Please read [CONTRIBUTING] for more details.
 
 [CONTRIBUTING]: https://github.com/hhandoko/diskusi/blob/master/CONTRIBUTING.md
 [Elixir Lang]: http://elixir-lang.org
+[Elm Lang]: http://elm-lang.org/
 [feature-branch]: http://nvie.com/posts/a-successful-git-branching-model/
 [LICENSE]: https://github.com/hhandoko/diskusi/blob/master/LICENSE.txt
 [Node.js]: https://nodejs.org
