@@ -21,23 +21,50 @@ defmodule Diskusi.CommentControllerTest do
   """
 
   use Diskusi.ConnCase
+  alias Diskusi.Comment
   alias Diskusi.CommentView
+  alias Diskusi.ErrorView
 
   test "#index renders a list comments" do
-    conn    = build_conn()
-    comment = insert(:comment)
+    comment  = insert(:comment)
+    conn     = build_conn()
+    conn     = get(conn, comment_path(conn, :index))
 
-    conn    = get(conn, comment_path(conn, :index))
+    expected = json_response(conn, 200)
+    response = render_json(CommentView, "index.json", comments: [comment])
 
-    assert json_response(conn, 200) == render_json(CommentView, "index.json", comments: [comment])
+    assert expected == response
+  end
+
+  test "#index without results render an empty results response" do
+    conn     = build_conn()
+    conn     = get(conn, comment_path(conn, :index))
+
+    expected = json_response(conn, 200)
+    response = render_json(CommentView, "index.json", comments: [])
+
+    assert expected == response
   end
 
   test "#show renders a single comment" do
-    conn    = build_conn()
-    comment = insert(:comment)
+    comment  = insert(:comment)
+    conn     = build_conn()
+    conn     = get(conn, comment_path(conn, :show, comment))
 
-    conn    = get(conn, comment_path(conn, :show, comment))
+    expected = json_response(conn, 200)
+    response = render_json(CommentView, "show.json", comment: comment)
 
-    assert json_response(conn, 200) == render_json(CommentView, "show.json", comment: comment)
+    assert expected == response
+  end
+
+  test "#show without results render an empty result response with 404 status code" do
+    comment  = %Comment{build(:comment) | id: 0}
+    conn     = build_conn()
+    conn     = get(conn, comment_path(conn, :show, comment))
+
+    expected = json_response(conn, 404)
+    response = render_json(ErrorView, "404.json", comment: comment)
+
+    assert expected == response
   end
 end

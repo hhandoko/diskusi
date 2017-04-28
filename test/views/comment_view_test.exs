@@ -25,34 +25,39 @@ defmodule Diskusi.CommentViewTest do
   alias Diskusi.CommentView
 
   test "comment_json" do
-    comment = insert(:comment)
+    comment  = insert(:comment)
 
-    rendered_comment = CommentView.comment_json(comment)
+    expected = CommentView.comment_json(comment)
+    response = %{
+                 text: comment.text,
+                 inserted_at: comment.inserted_at,
+                 updated_at: comment.updated_at
+               }
 
-    assert rendered_comment == %{
-      text: comment.text,
-      inserted_at: comment.inserted_at,
-      updated_at: comment.updated_at
-    }
+    assert expected == response
   end
 
   test "index.json" do
-    comment = insert(:comment)
+    comment  = insert(:comment)
 
-    rendered_comments = CommentView.render("index.json", %{comments: [comment]})
+    expected = CommentView.render("index.json", %{comments: [comment]})
+    response = %{
+                 success: true,
+                 results: [CommentView.comment_json(comment)]
+               }
 
-    assert rendered_comments == %{
-      comments: [CommentView.comment_json(comment)]
-    }
+    assert expected == response
   end
 
   test "show.json" do
-    comment = insert(:comment)
+    comment  = insert(:comment)
 
-    rendered_comment = CommentView.render("show.json", %{comment: comment})
+    expected = CommentView.render("show.json", %{comment: comment})
+    response = %{
+                 success: true,
+                 result: CommentView.comment_json(comment)
+               }
 
-    assert rendered_comment == %{
-      comment: CommentView.comment_json(comment)
-    }
+    assert expected == response
   end
 end

@@ -22,24 +22,34 @@ defmodule Diskusi.CommentController do
 
   use Diskusi.Web, :controller
   alias Diskusi.Comment
+  alias Diskusi.ErrorView
 
   @doc """
   GET `/api/comments`
 
-  Returns all comments result as JSON.
+  Returns all comments result as JSON, or an empty result array if not found.
   """
   def index(conn, _params) do
     comments = Repo.all(Comment)
-    conn |> render("index.json", comments: comments)
+    conn
+    |> render("index.json", comments: comments)
   end
 
   @doc """
   GET `/api/comments/:id
 
-  Returns a comment result as JSON for the given ID.
+  Returns a comment result as JSON for the given ID, or 404 if not found.
   """
   def show(conn, %{"id" => id}) do
-    comment = Repo.get!(Comment, id)
-    conn |> render("show.json", comment: comment)
+    case Repo.get(Comment, id) do
+      comment = %Comment{} ->
+        conn
+        |> render("show.json", comment: comment)
+
+      _ ->
+        conn
+        |> put_status(404)
+        |> render(ErrorView, "404.json", %{})
+    end
   end
 end

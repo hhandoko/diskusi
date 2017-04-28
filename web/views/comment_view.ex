@@ -27,7 +27,8 @@ defmodule Diskusi.CommentView do
   """
   def render("index.json", %{comments: comments}) do
     %{
-      comments: Enum.map(comments, &comment_json/1)
+      success: true,
+      results: Enum.map(comments, &comment_json/1)
     }
   end
 
@@ -36,7 +37,8 @@ defmodule Diskusi.CommentView do
   """
   def render("show.json", %{comment: comment}) do
     %{
-      comment: comment_json(comment)
+      success: true,
+      result: comment_json(comment)
     }
   end
 
