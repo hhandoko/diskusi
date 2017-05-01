@@ -1,5 +1,5 @@
 ------
--- File     : Main.elm
+-- File     : Comment.elm
 -- License  :
 --   Copyright (c) 2017 Herdy Handoko
 --
@@ -15,70 +15,67 @@
 --   See the License for the specific language governing permissions and
 --   limitations under the License.
 ------
-module Main exposing (..)
+module Comment exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (class)
-
-import Comment exposing (..)
-
-
-main =
-  program
-    { init = init
-    , update = update
-    , subscriptions = subscriptions
-    , view = view
-    }
+import Html.Events exposing (onClick)
 
 
 -- MODEL -----------------------------------------------------------------------
 
 
 type alias Model =
-  { comments : List Comment.Model
+  { text : String
   }
 
 
 type Msg
   = NoOp
-  | CommentsMsg Comment.Msg
-
-
-init : ( Model, Cmd Msg )
-init =
-  ( { comments = Comment.initialModel }, Cmd.none )
+  | Fetch
 
 
 -- UPDATE ----------------------------------------------------------------------
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> List Model -> ( List Model, Cmd Msg )
 update msg model =
   case msg of
-    CommentsMsg commentMsg ->
-      let
-        ( updatedModel, cmd ) =
-          Comment.update commentMsg model.comments
-      in
-        ( { model | comments = updatedModel }, Cmd.map CommentsMsg cmd )
-    _ ->
+    NoOp ->
       ( model, Cmd.none )
+    Fetch ->
+      ( comments, Cmd.none )
 
 
--- SUBSCRIPTION ----------------------------------------------------------------
+initialModel : List Model
+initialModel =
+  []
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
-  Sub.none
+comments : List Model
+comments =
+  [ { text = "Comment 1" }
+  , { text = "Comment 2" }
+  , { text = "Comment 3" }
+  ]
 
 
 -- VIEW ------------------------------------------------------------------------
 
 
-view : Model -> Html Msg
-view model =
-  div [ class "app" ]
-    [ map CommentsMsg <| Comment.view model.comments
+renderComment : Model -> Html a
+renderComment model =
+  li []
+    [ span [ class "comment" ]
+        [ strong [] [ text model.text ]
+        ]
+    ]
+
+
+view : List Model -> Html Msg
+view models =
+  div [ class "comment-list" ]
+    [ h2 [] [ text "Comments" ]
+    , button [ onClick Fetch, class "btn btn-primary" ] [ text "Refresh" ]
+    , ul [] <| List.map renderComment models
     ]
