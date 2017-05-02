@@ -42,7 +42,7 @@ type alias Model =
 
 type Msg
   = NoOp
-  | CommentsMsg Comment.Msg
+  | CommentMsg Comment.Msg
 
 
 init : ( Model, Cmd Msg )
@@ -56,12 +56,12 @@ init =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    CommentsMsg commentMsg ->
+    CommentMsg commentMsg ->
       let
         ( updatedModel, cmd ) =
           Comment.update commentMsg model.comments
       in
-        ( { model | comments = updatedModel }, Cmd.map CommentsMsg cmd )
+        ( { model | comments = updatedModel }, Cmd.map CommentMsg cmd )
     _ ->
       ( model, Cmd.none )
 
@@ -80,5 +80,5 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
   div [ class "app" ]
-    [ map CommentsMsg <| Comment.view model.comments
+    [ map CommentMsg <| Comment.view model.comments
     ]

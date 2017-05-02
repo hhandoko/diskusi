@@ -20,6 +20,9 @@ module Comment exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
+import Http
+import Json.Decode as Decode exposing (..)
+import Json.Encode
 
 
 -- MODEL -----------------------------------------------------------------------
@@ -32,7 +35,31 @@ type alias Model =
 
 type Msg
   = NoOp
-  | Fetch
+  | FetchAll
+  | FetchAllHandler (Result Http.Error CommentResponse)
+
+
+type alias CommentResponse =
+  { results : List Model
+  }
+
+
+commentResponseDecoder : Decode.Decoder CommentResponse
+commentResponseDecoder =
+  Decode.map CommentResponse
+    (field "results" commentListDecoder)
+
+
+commentListDecoder : Decode.Decoder (List Model)
+commentListDecoder =
+  list commentDecoder
+
+
+commentDecoder : Decode.Decoder Model
+commentDecoder =
+  Decode.map Model
+    (field "text" string)
+
 
 
 -- UPDATE ----------------------------------------------------------------------
@@ -43,8 +70,15 @@ update msg model =
   case msg of
     NoOp ->
       ( model, Cmd.none )
-    Fetch ->
-      ( comments, Cmd.none )
+
+    FetchAll ->
+      ( model, fetchAll )
+
+    FetchAllHandler ( Ok res ) ->
+      ( res.results, Cmd.none )
+
+    FetchAllHandler ( Err _ ) ->
+      ( model, Cmd.none )
 
 
 initialModel : List Model
@@ -52,12 +86,20 @@ initialModel =
   []
 
 
-comments : List Model
-comments =
-  [ { text = "Comment 1" }
-  , { text = "Comment 2" }
-  , { text = "Comment 3" }
-  ]
+-- OPERATIONS ------------------------------------------------------------------
+
+
+resourceUrl : String
+resourceUrl =
+  "/api/comments"
+
+
+fetchAll : Cmd Msg
+fetchAll =
+  let
+    request = Http.get resourceUrl commentResponseDecoder
+  in
+    Http.send FetchAllHandler request
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -76,6 +118,6 @@ view : List Model -> Html Msg
 view models =
   div [ class "comment-list" ]
     [ h2 [] [ text "Comments" ]
-    , button [ onClick Fetch, class "btn btn-primary" ] [ text "Refresh" ]
+    , button [ onClick FetchAll, class "btn btn-primary" ] [ text "Refresh" ]
     , ul [] <| List.map renderComment models
     ]
