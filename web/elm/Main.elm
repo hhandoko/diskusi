@@ -47,7 +47,7 @@ type Msg
 
 init : ( Model, Cmd Msg )
 init =
-  ( { comments = Comment.initialModel }, Cmd.none )
+  ( { comments = Comment.initialModel }, Cmd.map CommentMsg Comment.fetchAll )
 
 
 -- UPDATE ----------------------------------------------------------------------
