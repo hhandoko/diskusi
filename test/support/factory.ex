@@ -1,5 +1,5 @@
 ###
-# File     : seeds.exs
+# File     : factory.ex
 # License  :
 #   Copyright (c) 2017 Herdy Handoko
 #
@@ -15,10 +15,21 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 ###
-alias Diskusi.Repo
-alias Diskusi.Comment
+defmodule Diskusi.Factory do
+  @moduledoc """
+  Factory module to help generate test data.
 
-# Insert fake comments
-Repo.insert! %Comment{ text: "Hello World!" }
-Repo.insert! %Comment{ text: "Ahoy there" }
-Repo.insert! %Comment{ text: "What's up?" }
+  Based on the [ex_machina](https://github.com/thoughtbot/ex_machina) library.
+  """
+
+  use ExMachina.Ecto, repo: Diskusi.Repo
+
+  @doc """
+  Create a new comment fixture for testing.
+  """
+  def comment_factory do
+    %Diskusi.Comment{
+      text: "Hello world!"
+    }
+  end
+end

@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.15.0">
-    <title>Diskusi.UserSocket – Diskusi v0.0.1</title>
+    <title>Diskusi.CommentController – Diskusi v0.0.1</title>
     <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
     
     <script src="dist/sidebar_items-b9684b401f.js"></script>
@@ -59,15 +59,20 @@
 
       <h1>
         <small class="visible-xs">Diskusi v0.0.1</small>
-        Diskusi.UserSocket
+        Diskusi.CommentController
         
         
-          <a href="https://github.com/hhandoko/diskusi/blob/master/web/channels/user_socket.ex#L1" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/hhandoko/diskusi/blob/master/web/controllers/comment_controller.ex#L18" title="View Source" class="view-source" rel="help">
             <i class="icon-code"></i>
           </a>
         
       </h1>
 
+      
+        <section id="moduledoc">
+          <p>Comment controller.</p>
+
+        </section>
       
 
       
@@ -87,19 +92,19 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#connect/2">connect(params, socket)</a>
+    <a href="#index/2">index(conn, params)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Receives the socket params and authenticates the connection</p>
+    <div class="summary-synopsis"><p>GET <code class="inline">/api/comments</code></p>
 </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#id/1">id(socket)</a>
+    <a href="#show/2">show(conn, map)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Identifies the socket connection</p>
+    <div class="summary-synopsis"><p>GET `/api/comments/:id</p>
 </div>
   
 </div>
@@ -122,15 +127,15 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="connect/2">
+          <div class="detail" id="index/2">
   
   <div class="detail-header">
-    <a href="#connect/2" class="detail-link" title="Link to this function">
+    <a href="#index/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">connect(params, socket)</span>
+    <span class="signature">index(conn, params)</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/channels/user_socket.ex#L22" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/controllers/comment_controller.ex#L32" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -138,33 +143,20 @@
     
   </div>
   <section class="docstring">
-    <p>Receives the socket params and authenticates the connection.</p>
-<h2 id="connect/2-socket-params-and-assigns" class="section-heading">
-  <a href="#connect/2-socket-params-and-assigns" class="hover-link"><i class="icon-link"></i></a>
-  Socket params and assigns
-</h2>
-
-<p>Socket params are passed from the client and can
-be used to verify and authenticate a user. After
-verification, you can put default assigns into
-the socket that will be set for all channels, ie</p>
-<pre><code class="elixir">{:ok, assign(socket, :user_id, verified_user_id)}</code></pre>
-<p>To deny connection, return <code class="inline">:error</code>.</p>
-<p>See <a href="https://hexdocs.pm/phoenix/1.2.1/Phoenix.Token.html"><code class="inline">Phoenix.Token</code></a> documentation for examples in
-performing token verification on connect.</p>
-<p>Callback implementation for <a href="https://hexdocs.pm/phoenix/1.2.1/Phoenix.Socket.html#c:connect/2"><code class="inline">Phoenix.Socket.connect/2</code></a>.</p>
+    <p>GET <code class="inline">/api/comments</code></p>
+<p>Returns all comments result as JSON, or an empty result array if not found.</p>
 
   </section>
 </div>
-<div class="detail" id="id/1">
+<div class="detail" id="show/2">
   
   <div class="detail-header">
-    <a href="#id/1" class="detail-link" title="Link to this function">
+    <a href="#show/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">id(socket)</span>
+    <span class="signature">show(conn, map)</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/channels/user_socket.ex#L36" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/controllers/comment_controller.ex#L43" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -172,14 +164,9 @@ performing token verification on connect.</p>
     
   </div>
   <section class="docstring">
-    <p>Identifies the socket connection.</p>
-<p>Socket id’s are topics that allow you to identify all sockets for a given user:</p>
-<pre><code class="elixir">def id(socket), do: &quot;users_socket:#{socket.assigns.user_id}&quot;</code></pre>
-<p>Would allow you to broadcast a “disconnect” event and terminate
-all active sockets and channels for a given user:</p>
-<pre><code class="elixir">MyApp.Endpoint.broadcast(&quot;users_socket:&quot; &lt;&gt; user.id, &quot;disconnect&quot;, %{})</code></pre>
-<p>Returning <code class="inline">nil</code> makes this socket anonymous.</p>
-<p>Callback implementation for <a href="https://hexdocs.pm/phoenix/1.2.1/Phoenix.Socket.html#c:id/1"><code class="inline">Phoenix.Socket.id/1</code></a>.</p>
+    <p>GET `/api/comments/:id
+
+Returns a comment result as JSON for the given ID, or 404 if not found.</p>
 
   </section>
 </div>

@@ -1,5 +1,5 @@
 ###
-# File     : seeds.exs
+# File     : comment.ex
 # License  :
 #   Copyright (c) 2017 Herdy Handoko
 #
@@ -15,10 +15,16 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 ###
-alias Diskusi.Repo
-alias Diskusi.Comment
+defmodule Diskusi.Comment do
+  @moduledoc """
+  Comment model.
+  """
 
-# Insert fake comments
-Repo.insert! %Comment{ text: "Hello World!" }
-Repo.insert! %Comment{ text: "Ahoy there" }
-Repo.insert! %Comment{ text: "What's up?" }
+  use Diskusi.Web, :model
+
+  schema "comment" do
+    field :text
+
+    timestamps()
+  end
+end

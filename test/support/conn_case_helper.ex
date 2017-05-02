@@ -1,5 +1,5 @@
 ###
-# File     : seeds.exs
+# File     : conn_case_helper.ex
 # License  :
 #   Copyright (c) 2017 Herdy Handoko
 #
@@ -15,10 +15,23 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 ###
-alias Diskusi.Repo
-alias Diskusi.Comment
+defmodule Diskusi.ConnCaseHelper do
 
-# Insert fake comments
-Repo.insert! %Comment{ text: "Hello World!" }
-Repo.insert! %Comment{ text: "Ahoy there" }
-Repo.insert! %Comment{ text: "What's up?" }
+  @doc """
+  Render template for the given view as JSON.
+  """
+  def render_json(view, template, assigns) do
+    template
+    |> view.render(assigns)
+    |> format_json
+  end
+
+  @doc """
+  Serialize and deserialize the JSON data.
+  """
+  defp format_json(data) do
+    data
+    |> Poison.encode!
+    |> Poison.decode!
+  end
+end

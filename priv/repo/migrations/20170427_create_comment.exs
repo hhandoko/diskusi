@@ -1,5 +1,5 @@
 ###
-# File     : seeds.exs
+# File     : 20170427_create_comment.exs
 # License  :
 #   Copyright (c) 2017 Herdy Handoko
 #
@@ -15,10 +15,18 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 ###
-alias Diskusi.Repo
-alias Diskusi.Comment
+defmodule Diskusi.Repo.Migrations.CreateComment do
+  @moduledoc """
+  Create comment table migration script.
+  """
 
-# Insert fake comments
-Repo.insert! %Comment{ text: "Hello World!" }
-Repo.insert! %Comment{ text: "Ahoy there" }
-Repo.insert! %Comment{ text: "What's up?" }
+  use Ecto.Migration
+
+  def change do
+    create table(:comment) do
+      add :text, :string
+
+      timestamps()
+    end
+  end
+end

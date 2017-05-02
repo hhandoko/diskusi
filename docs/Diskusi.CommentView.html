@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.15.0">
-    <title>Diskusi.ErrorView – Diskusi v0.0.1</title>
+    <title>Diskusi.CommentView – Diskusi v0.0.1</title>
     <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
     
     <script src="dist/sidebar_items-b9684b401f.js"></script>
@@ -59,10 +59,10 @@
 
       <h1>
         <small class="visible-xs">Diskusi v0.0.1</small>
-        Diskusi.ErrorView
+        Diskusi.CommentView
         
         
-          <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/error_view.ex#L18" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/comment_view.ex#L18" title="View Source" class="view-source" rel="help">
             <i class="icon-code"></i>
           </a>
         
@@ -70,7 +70,7 @@
 
       
         <section id="moduledoc">
-          <p>Error view templates.</p>
+          <p>Comment view template.</p>
 
         </section>
       
@@ -119,10 +119,19 @@
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#comment_json/1">comment_json(comment)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Comment JSON model</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#render/2">render(template, assigns \\ %{})</a>
   </div>
   
-    <div class="summary-synopsis"><p>Render 500 internal server error as JSON response</p>
+    <div class="summary-synopsis"><p>Single comment result JSON template</p>
 </div>
   
 </div>
@@ -131,8 +140,9 @@
     <a href="#template_not_found/2">template_not_found(template, assigns)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Error template fallback. Render 500 error when no render clause matches
-or no template is found</p>
+    <div class="summary-synopsis"><p>Callback invoked when no template is found.
+By default it raises but can be customized
+to render a particular template</p>
 </div>
   
 </div>
@@ -163,7 +173,7 @@ or no template is found</p>
     </a>
     <span class="signature">__phoenix_recompile__?()</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/error_view.ex#L18" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/comment_view.ex#L18" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -183,7 +193,7 @@ or no template is found</p>
     </a>
     <span class="signature">__resource__()</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/error_view.ex#L23" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/comment_view.ex#L23" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -203,7 +213,7 @@ or no template is found</p>
     </a>
     <span class="signature">__templates__()</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/error_view.ex#L18" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/comment_view.ex#L18" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -212,6 +222,26 @@ or no template is found</p>
   </div>
   <section class="docstring">
     <p>Returns the template root alongside all templates.</p>
+
+  </section>
+</div>
+<div class="detail" id="comment_json/1">
+  
+  <div class="detail-header">
+    <a href="#comment_json/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">comment_json(comment)</span>
+    
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/comment_view.ex#L48" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Comment JSON model.</p>
 
   </section>
 </div>
@@ -225,7 +255,7 @@ or no template is found</p>
     </a>
     <span class="signature">render(template, assigns \\ %{})</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/error_view.ex#L23" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/comment_view.ex#L23" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -233,7 +263,7 @@ or no template is found</p>
     
   </div>
   <section class="docstring">
-    <p>Render 500 internal server error as JSON response.</p>
+    <p>Single comment result JSON template.</p>
 
   </section>
 </div>
@@ -245,7 +275,7 @@ or no template is found</p>
     </a>
     <span class="signature">template_not_found(template, assigns)</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/error_view.ex#L57" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/comment_view.ex#L23" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -259,8 +289,9 @@ or no template is found</p>
     
   </div>
   <section class="docstring">
-    <p>Error template fallback. Render 500 error when no render clause matches
-or no template is found.</p>
+    <p>Callback invoked when no template is found.
+By default it raises but can be customized
+to render a particular template.</p>
 
   </section>
 </div>
