@@ -29,6 +29,7 @@ defmodule Diskusi.CommentController do
 
   Returns all comments result as JSON, or an empty result array if not found.
   """
+  @spec index(Plug.Conn.t, map) :: Plug.Conn.t
   def index(conn, _params) do
     comments = Repo.all(Comment)
     conn
@@ -36,10 +37,11 @@ defmodule Diskusi.CommentController do
   end
 
   @doc """
-  GET `/api/comments/:id
+  GET `/api/comments/:id`
 
   Returns a comment result as JSON for the given ID, or 404 if not found.
   """
+  @spec show(Plug.Conn.t, map) :: Plug.Conn.t
   def show(conn, %{"id" => id}) do
     case Repo.get(Comment, id) do
       comment = %Comment{} ->
