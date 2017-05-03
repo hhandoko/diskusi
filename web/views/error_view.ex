@@ -25,6 +25,7 @@ defmodule Diskusi.ErrorView do
   @doc """
   Render 404 page not found error as HTML.
   """
+  @spec render(String.t, map) :: any
   def render("404.html", _assigns) do
     "Page not found"
   end
@@ -54,6 +55,7 @@ defmodule Diskusi.ErrorView do
   Error template fallback. Render 500 error when no render clause matches
   or no template is found.
   """
+  # NOTE: typespec omitted due to dialyzer warnings on overlapping domains
   def template_not_found(_template, assigns) do
     render "500.html", assigns
   end

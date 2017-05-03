@@ -27,8 +27,8 @@ defmodule Diskusi.CommentControllerTest do
 
   test "`GET /api/comments` renders a list comments" do
     comment  = insert(:comment)
-    conn     = build_conn()
-    conn     = get(conn, comment_path(conn, :index))
+    builder  = build_conn()
+    conn     = get(builder, comment_path(builder, :index))
 
     expected = json_response(conn, 200)
     response = render_json(CommentView, "index.json", comments: [comment])
@@ -37,8 +37,8 @@ defmodule Diskusi.CommentControllerTest do
   end
 
   test "`GET /api/comments` without results renders an empty results response" do
-    conn     = build_conn()
-    conn     = get(conn, comment_path(conn, :index))
+    builder  = build_conn()
+    conn     = get(builder, comment_path(builder, :index))
 
     expected = json_response(conn, 200)
     response = render_json(CommentView, "index.json", comments: [])
@@ -48,8 +48,8 @@ defmodule Diskusi.CommentControllerTest do
 
   test "`GET /api/comments/:id` renders a single comment" do
     comment  = insert(:comment)
-    conn     = build_conn()
-    conn     = get(conn, comment_path(conn, :show, comment))
+    builder  = build_conn()
+    conn     = get(builder, comment_path(builder, :show, comment))
 
     expected = json_response(conn, 200)
     response = render_json(CommentView, "show.json", comment: comment)
@@ -59,8 +59,8 @@ defmodule Diskusi.CommentControllerTest do
 
   test "`GET /api/comments/:id` without results renders an empty result response with 404 status code" do
     comment  = %Comment{build(:comment) | id: 0}
-    conn     = build_conn()
-    conn     = get(conn, comment_path(conn, :show, comment))
+    builder  = build_conn()
+    conn     = get(builder, comment_path(builder, :show, comment))
 
     expected = json_response(conn, 404)
     response = render_json(ErrorView, "404.json", comment: comment)

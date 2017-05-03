@@ -16,6 +16,9 @@
 #   limitations under the License.
 ###
 defmodule Diskusi.ConnCaseHelper do
+  @moduledoc """
+  Controller test case helper functions.
+  """
 
   @doc """
   Render template for the given view as JSON.
@@ -26,9 +29,6 @@ defmodule Diskusi.ConnCaseHelper do
     |> format_json
   end
 
-  @doc """
-  Serialize and deserialize the JSON data.
-  """
   defp format_json(data) do
     data
     |> Poison.encode!

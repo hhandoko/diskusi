@@ -11,7 +11,7 @@
 The following binaries / libraries need to be installed in order to compile the web application.
 The version numbers denotes the specific version used to develop the web application, it may or may not work under other minor versions:
 
-  - [Elixir Lang] v1.3.x
+  - [Elixir Lang] v1.4.x
   - [Elm Lang] v0.18.x
   - [Phoenix Framework] v1.2.x
   - [Node.js] v7.5.x
@@ -40,11 +40,14 @@ Successful Vagrant provisioning will enable the following services to be availab
      1. Run `vagrant up`
   1. Install dependencies:
      1. Install Phoenix dependencies with `mix deps.get`
+     1. Configure Dialyzer support with `mix do compile, dialyzer --plt` (this will take a few minutes on first run)
      1. Install npm dependencies with `npm install`
   1. Data store setup:
      1. Create database with `mix ecto.create`
      1. Migrate database with `mix ecto.migrate`
      1. Seed the database with `mix run priv/repo/seeds.exs`
+  1. Run type-checker:
+     1. Run Dialyzer with `mix dialyzer`
   1. Run tests:
      1. Run Elixir tests with `mix test`
      1. Run JavaScript and Elm tests with `npm test`

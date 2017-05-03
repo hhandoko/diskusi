@@ -25,6 +25,7 @@ defmodule Diskusi.CommentView do
   @doc """
   All comments result JSON template.
   """
+  @spec render(String.t, map) :: map
   def render("index.json", %{comments: comments}) do
     %{
       success: true,
@@ -45,6 +46,7 @@ defmodule Diskusi.CommentView do
   @doc """
   Comment JSON model.
   """
+  @spec comment_json(Diskusi.Comment.t) :: map
   def comment_json(comment) do
     %{
       text: comment.text,
