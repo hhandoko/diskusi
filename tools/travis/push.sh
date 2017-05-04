@@ -41,11 +41,7 @@ has_git_changes() {
   git diff-index --quiet HEAD -- || echo "untracked"
 }
 
-is_master_branch() {
-  [ "$TRAVIS_BRANCH" == "master" ]
-}
-
-if has_git_changes && is_master_branch; then
+if has_git_changes; then
   setup_git
   commit_website_files
   upload_files
