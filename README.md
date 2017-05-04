@@ -1,4 +1,5 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-brightgreen.svg)](LICENSE)
+[![Master Build Status](https://travis-ci.org/hhandoko/diskusi.svg?branch=master)](https://travis-ci.org/hhandoko/diskusi)
 
 # Diskusi
 
@@ -46,8 +47,9 @@ Successful Vagrant provisioning will enable the following services to be availab
      1. Create database with `mix ecto.create`
      1. Migrate database with `mix ecto.migrate`
      1. Seed the database with `mix run priv/repo/seeds.exs`
-  1. Run type-checker:
+  1. Run type-checker and static analysis tool:
      1. Run Dialyzer with `mix dialyzer`
+     1. Run Credo with `mix credo`
   1. Run tests:
      1. Run Elixir tests with `mix test`
      1. Run JavaScript and Elm tests with `npm test`
