@@ -1,0 +1,21 @@
+language: elixir
+
+elixir:
+  - 1.4.2
+
+otp_release:
+  - 19.0
+
+services:
+  - postgresql
+
+addons:
+  postgresql: "9.6"
+
+env:
+  global:
+    - MIX_ENV=test
+
+before_script:
+  - psql -U postgres -c 'CREATE DATABASE diskusi_data_test;'
+  - cp tools/travis/test.exs config/test.exs
