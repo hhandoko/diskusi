@@ -29,7 +29,8 @@ import Json.Encode
 
 
 type alias Model =
-  { text : String
+  { author: String
+  , text : String
   }
 
 
@@ -57,7 +58,8 @@ commentListDecoder =
 
 commentDecoder : Decode.Decoder Model
 commentDecoder =
-  Decode.map Model
+  Decode.map2 Model
+    (field "author" string)
     (field "text" string)
 
 
@@ -109,7 +111,8 @@ renderComment : Model -> Html a
 renderComment model =
   li []
     [ span [ class "comment" ]
-        [ strong [] [ text model.text ]
+        [ strong [] [ text model.author ++ " " ]
+        , text model.text
         ]
     ]
 

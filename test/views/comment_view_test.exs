@@ -29,6 +29,7 @@ defmodule Diskusi.CommentViewTest do
 
     expected = CommentView.comment_json(comment)
     response = %{
+                 author: comment.author,
                  text: comment.text,
                  inserted_at: comment.inserted_at,
                  updated_at: comment.updated_at

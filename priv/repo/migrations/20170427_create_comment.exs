@@ -24,6 +24,7 @@ defmodule Diskusi.Repo.Migrations.CreateComment do
 
   def change do
     create table(:comment) do
+      add :author, :string
       add :text, :string
 
       timestamps()

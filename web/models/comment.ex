@@ -23,6 +23,7 @@ defmodule Diskusi.Comment do
   use Diskusi.Web, :model
 
   schema "comment" do
+    field :author
     field :text
 
     timestamps()

@@ -19,6 +19,6 @@ alias Diskusi.Repo
 alias Diskusi.Comment
 
 # Insert fake comments
-Repo.insert! %Comment{ text: "Hello World!" }
-Repo.insert! %Comment{ text: "Ahoy there" }
-Repo.insert! %Comment{ text: "What's up?" }
+Repo.insert! %Comment{author: "Alex Bell", text: "Hello World!"}
+Repo.insert! %Comment{author: "Bert Einstein", text: "Ahoy there"}
+Repo.insert! %Comment{author: "Nick Tesla", text: "What's up?"}
