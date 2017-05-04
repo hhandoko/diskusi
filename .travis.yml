@@ -54,12 +54,14 @@ install:
   - mix local.hex --force
   - mix deps.get
   - npm install
+  - cd test/elm && ../../node_modules/elm/binwrappers/elm-package install; cd ../..
 
-# Create test database and copy test configuration
+# Create test database, copy test configuration, and compile before test
 # ~~~~~~
 before_script:
   - psql -U postgres -c 'CREATE DATABASE diskusi_data_test;'
   - cp tools/travis/test.exs config/test.exs
+  - mix compile
 
 # Test!
 # ~~~~~~
