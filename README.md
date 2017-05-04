@@ -10,7 +10,7 @@
 ### Develop and Compile Dependencies
 
 The following binaries / libraries need to be installed in order to compile the web application.
-The version numbers denotes the specific version used to develop the web application, it may or may not work under other minor versions:
+The version numbers denotes the specific version used to develop (and release-test) the web application, it may or may not work under other minor versions:
 
   - [Elixir Lang] v1.4.x
   - [Elm Lang] v0.18.x
@@ -41,15 +41,11 @@ Successful Vagrant provisioning will enable the following services to be availab
      1. Run `vagrant up`
   1. Install dependencies:
      1. Install Phoenix dependencies with `mix deps.get`
-     1. Configure Dialyzer support with `mix do compile, dialyzer --plt` (this will take a few minutes on first run)
      1. Install npm dependencies with `npm install`
   1. Data store setup:
      1. Create database with `mix ecto.create`
      1. Migrate database with `mix ecto.migrate`
      1. Seed the database with `mix run priv/repo/seeds.exs`
-  1. Run type-checker and static analysis tool:
-     1. Run Dialyzer with `mix dialyzer`
-     1. Run Credo with `mix credo`
   1. Run tests:
      1. Run Elixir tests with `mix test`
      1. Run JavaScript and Elm tests with `npm test`
@@ -57,7 +53,13 @@ Successful Vagrant provisioning will enable the following services to be availab
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-*NOTE: Run `mix docs` to generate (updated) doc-comment documentation.*
+### Other Commands
+
+  * `mix dialyzer` to run Dialyzer type-checker
+  * `mix credo` to run Credo static analysis tool
+  * `mix docs` to run ex_doc doc-comment documentation generator
+
+*NOTE: Run `mix do compile, dialyzer --plt` before running Dialyzer for the first time. It will build the PLT (Persistent Lookup Table) type information and may take a few minutes to complete.*
 
 ## Contributing
 

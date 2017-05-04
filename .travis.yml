@@ -38,6 +38,7 @@ node_js: 7
 env:
   global:
     - MIX_ENV=test
+    - secure: "FkpdB8nXf3KsvViipNBUq2kwYtVlNnAlZSjJS2/IORLWIsUdWGbJ7ZXbfc8734Y/Vg4k7IfaJYu/NKGGoNA7ad8ZVnP8Bt8Wbw6BAYDzcmLA5oAPUuAblgE4rhSV8Jts7xttwVnm6L84dmUqHN8r3aDc+EDbGiQCeqLEkI39sc8OPvs+NqSe7118yK7vMwTJd8l0hEBzRt6Axg+vhIkog/g9kyGknwacncd7QslqraR+E+Gm3UD/abTITIazhywJIR9MbD9Nui9tOWCZCeZwM1x7cL/B+cyR8vA/rmX0XipAZ5mpNAkfBJeBbmCQCFoacj0+f52eZe6fstyjCHHWah3wHU6UokyBAeljOYq+Jja0obi1ufZQmjjqodTBNs22Fkl+OLffc4NhA/SfhRDmjUIkZsqJqQNDjHVBKD9pxxPbuW6ygR65JMz1/dhtUJUUuqQBlgKYl7ZWKNwdF+qM7nmyAkFK+46ux7dwVKuqGHoyml+Ik5B6uEEjMt0LoeQUiss0PoAqRnDtkCcZ77nI4IijFJLMvkFMt7AkGL+aBuu6kyGTbPtYEt0HOIi4TO0nkuY2o1Qwu5KVpGE5/f+rYNaWTsuLBNv9FBukFdp827Bu4Umtpr33JsIM/Y/eMKoUft9y2ExkS1SASQF7TVT6bDakEjaMg1c6q2OYLKdo22c="
 
 # Ensure platform tools are up-to-date
 # ~~~~~~
@@ -60,7 +61,7 @@ install:
 # ~~~~~~
 before_script:
   - psql -U postgres -c 'CREATE DATABASE diskusi_data_test;'
-  - cp tools/travis/test.exs config/test.exs
+  - cp tools/travis/conf/test.exs config/test.exs
   - mix compile
   - cd test/elm && ../../node_modules/elm/binwrappers/elm-make Main.elm; cd ../..
 
@@ -69,3 +70,9 @@ before_script:
 script:
   - mix test
   - npm test
+
+# Run ex_doc publishing after successful CI on `master`
+# ~~~~~~
+after_success:
+  - mix docs
+  - ./tools/travis/push.sh
