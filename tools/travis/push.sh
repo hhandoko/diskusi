@@ -28,12 +28,12 @@ has_git_changes() {
 setup_git() {
   git config --global user.email "herdy.handoko@gmail.com"
   git config --global user.name "Herdy Handoko"
-  git status
 }
 
 commit_website_files() {
   echo "Adding untracked files."
-  git add docs/*
+  git add -A docs
+  git status
   git commit --message "Update docs (build: $TRAVIS_BUILD_NUMBER)"
 }
 
