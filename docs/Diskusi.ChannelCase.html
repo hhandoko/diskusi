@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.15.0">
-    <title>Diskusi.Comment – Diskusi v0.0.1</title>
+    <title>Diskusi.ChannelCase – Diskusi v0.0.1</title>
     <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
     
     <script src="dist/sidebar_items-1c67ded162.js"></script>
@@ -59,10 +59,10 @@
 
       <h1>
         <small class="visible-xs">Diskusi v0.0.1</small>
-        Diskusi.Comment
+        Diskusi.ChannelCase
         
         
-          <a href="https://github.com/hhandoko/diskusi/blob/master/web/models/comment.ex#L18" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/hhandoko/diskusi/blob/master/test/support/channel_case.ex#L1" title="View Source" class="view-source" rel="help">
             <i class="icon-code"></i>
           </a>
         
@@ -70,7 +70,15 @@
 
       
         <section id="moduledoc">
-          <p>Comment model.</p>
+          <p>This module defines the test case to be used by
+channel tests.</p>
+<p>Such tests rely on <a href="https://hexdocs.pm/phoenix/1.2.1/Phoenix.ChannelTest.html"><code class="inline">Phoenix.ChannelTest</code></a> and also
+import other functionality to make it easier
+to build and query models.</p>
+<p>Finally, if the test case interacts with the database,
+it cannot be async. For this reason, every test runs
+inside a transaction which is reset at the beginning
+of the test unless the test case is marked as async.</p>
 
         </section>
       

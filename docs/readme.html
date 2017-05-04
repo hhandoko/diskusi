@@ -8,7 +8,7 @@
     <title>About – Diskusi v0.0.1</title>
     <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
     
-    <script src="dist/sidebar_items-b9684b401f.js"></script>
+    <script src="dist/sidebar_items-1c67ded162.js"></script>
   </head>
   <body data-type="extras">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -68,7 +68,7 @@
 
 <h3>Develop and Compile Dependencies</h3>
 <p>The following binaries / libraries need to be installed in order to compile the web application.
-The version numbers denotes the specific version used to develop the web application, it may or may not work under other minor versions:</p>
+The version numbers denotes the specific version used to develop (and release-test) the web application, it may or may not work under other minor versions:</p>
 <ul>
 <li><a href="http://elixir-lang.org" title="">Elixir Lang</a> v1.4.x
 </li>
@@ -119,8 +119,6 @@ The version numbers denotes the specific version used to develop the web applica
 <ol>
 <li>Install Phoenix dependencies with <code class="inline">mix deps.get</code>
 </li>
-<li>Configure Dialyzer support with <code class="inline">mix do compile, dialyzer --plt</code> (this will take a few minutes on first run)
-</li>
 <li>Install npm dependencies with <code class="inline">npm install</code>
 </li>
 </ol>
@@ -132,14 +130,6 @@ The version numbers denotes the specific version used to develop the web applica
 <li>Migrate database with <code class="inline">mix ecto.migrate</code>
 </li>
 <li>Seed the database with <code class="inline">mix run priv/repo/seeds.exs</code>
-</li>
-</ol>
-</li>
-<li><p>Run type-checker and static analysis tool:</p>
-<ol>
-<li>Run Dialyzer with <code class="inline">mix dialyzer</code>
-</li>
-<li>Run Credo with <code class="inline">mix credo</code>
 </li>
 </ol>
 </li>
@@ -155,7 +145,16 @@ The version numbers denotes the specific version used to develop the web applica
 </li>
 </ol>
 <p>Now you can visit <a href="http://localhost:4000"><code class="inline">localhost:4000</code></a> from your browser.</p>
-<p><em>NOTE: Run <code class="inline">mix docs</code> to generate (updated) doc-comment documentation.</em></p>
+<h3>Other Commands</h3>
+<ul>
+<li><code class="inline">mix dialyzer</code> to run Dialyzer type-checker
+</li>
+<li><code class="inline">mix credo</code> to run Credo static analysis tool
+</li>
+<li><code class="inline">mix docs</code> to run ex_doc doc-comment documentation generator
+</li>
+</ul>
+<p><em>NOTE: Run <code class="inline">mix do compile, dialyzer --plt</code> before running Dialyzer for the first time. It will build the PLT (Persistent Lookup Table) type information and may take a few minutes to complete.</em></p>
 <h2 id="contributing" class="section-heading">
   <a href="#contributing" class="hover-link"><i class="icon-link"></i></a>
   Contributing

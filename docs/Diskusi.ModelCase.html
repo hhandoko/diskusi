@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.15.0">
-    <title>Diskusi.PageController – Diskusi v0.0.1</title>
+    <title>Diskusi.ModelCase – Diskusi v0.0.1</title>
     <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
     
     <script src="dist/sidebar_items-1c67ded162.js"></script>
@@ -59,10 +59,10 @@
 
       <h1>
         <small class="visible-xs">Diskusi v0.0.1</small>
-        Diskusi.PageController
+        Diskusi.ModelCase
         
         
-          <a href="https://github.com/hhandoko/diskusi/blob/master/web/controllers/page_controller.ex#L18" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/hhandoko/diskusi/blob/master/test/support/model_case.ex#L1" title="View Source" class="view-source" rel="help">
             <i class="icon-code"></i>
           </a>
         
@@ -70,7 +70,14 @@
 
       
         <section id="moduledoc">
-          <p>Static page controller.</p>
+          <p>This module defines the test case to be used by
+model tests.</p>
+<p>You may define functions here to be used as helpers in
+your model tests. See <a href="#errors_on/2"><code class="inline">errors_on/2</code></a>’s definition as reference.</p>
+<p>Finally, if the test case interacts with the database,
+it cannot be async. For this reason, every test runs
+inside a transaction which is reset at the beginning
+of the test unless the test case is marked as async.</p>
 
         </section>
       
@@ -92,10 +99,10 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#index/2">index(conn, params)</a>
+    <a href="#errors_on/2">errors_on(struct, data)</a>
   </div>
   
-    <div class="summary-synopsis"><p>GET <code class="inline">/</code></p>
+    <div class="summary-synopsis"><p>Helper for returning list of errors in a struct when given certain data</p>
 </div>
   
 </div>
@@ -118,30 +125,39 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="index/2">
+          <div class="detail" id="errors_on/2">
   
   <div class="detail-header">
-    <a href="#index/2" class="detail-link" title="Link to this function">
+    <a href="#errors_on/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">index(conn, params)</span>
+    <span class="signature">errors_on(struct, data)</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/controllers/page_controller.ex#L31" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/test/support/model_case.ex#L60" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
     
     
-      <div class="specs">
-        
-          <pre>index(<a href="https://hexdocs.pm/plug/1.3.0/Plug.Conn.html#t:t/0">Plug.Conn.t</a>, map) :: <a href="https://hexdocs.pm/plug/1.3.0/Plug.Conn.html#t:t/0">Plug.Conn.t</a></pre>
-        
-      </div>
-    
   </div>
   <section class="docstring">
-    <p>GET <code class="inline">/</code></p>
-<p>Returns the landing page.</p>
+    <p>Helper for returning list of errors in a struct when given certain data.</p>
+<h2 id="errors_on/2-examples" class="section-heading">
+  <a href="#errors_on/2-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<p>Given a User schema that lists <code class="inline">:name</code> as a required field and validates
+<code class="inline">:password</code> to be safe, it would return:</p>
+<pre><code class="iex elixir">iex&gt; errors_on(%User{}, %{password: &quot;password&quot;})
+[password: &quot;is unsafe&quot;, name: &quot;is blank&quot;]</code></pre>
+<p>You could then write your assertion like:</p>
+<pre><code class="elixir">assert {:password, &quot;is unsafe&quot;} in errors_on(%User{}, %{password: &quot;password&quot;})</code></pre>
+<p>You can also create the changeset manually and retrieve the errors
+field directly:</p>
+<pre><code class="iex elixir">iex&gt; changeset = User.changeset(%User{}, password: &quot;password&quot;)
+iex&gt; {:password, &quot;is unsafe&quot;} in changeset.errors
+true</code></pre>
 
   </section>
 </div>
