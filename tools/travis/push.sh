@@ -21,24 +21,26 @@
 #   See https://gist.github.com/willprice/e07efd73fb7f13f917ea
 ###
 
+has_git_changes() {
+  git diff-index --quiet HEAD -- || echo "Has untracked files."
+}
+
 setup_git() {
   git config --global user.email "herdy.handoko@gmail.com"
   git config --global user.name "Herdy Handoko"
+  git status
 }
 
 commit_website_files() {
-  git checkout -b master
+  echo "Adding untracked files."
   git add docs/*
   git commit --message "Update docs (build: $TRAVIS_BUILD_NUMBER)"
 }
 
 upload_files() {
+  echo "Pushing documentation upstream."
   git remote add origin-docs https://${GH_TOKEN}@github.com/hhandoko/diskusi.git > /dev/null 2>&1
   git push --quiet --set-upstream origin-docs master
-}
-
-has_git_changes() {
-  git diff-index --quiet HEAD -- || echo "untracked"
 }
 
 if has_git_changes; then
