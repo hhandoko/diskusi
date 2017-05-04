@@ -75,6 +75,6 @@ script:
 # ~~~~~~
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-      mix docs
-      ./tools/travis/push.sh
+      mix docs;
+      ./tools/travis/push.sh;
     fi
