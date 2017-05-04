@@ -26,17 +26,23 @@ addons:
 services:
   - postgresql
 
-# Set Elixir and OTP versions
+# Set Elixir, OTP, and Node.js versions
 # ~~~~~~
 language: elixir
 elixir: 1.4.2
 otp_release: 19.0
+node_js: 7
 
 # Use test context
 # ~~~~~~
 env:
   global:
     - MIX_ENV=test
+
+# Ensure up-to-date platform tools
+# ~~~~~~
+before_install:
+  - npm install -g npm
 
 # Configure dependencies
 # See:
