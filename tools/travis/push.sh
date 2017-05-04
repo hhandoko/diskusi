@@ -26,16 +26,17 @@ has_git_changes() {
 }
 
 setup_git() {
+  echo "Configuring git."
   git config --global user.email "herdy.handoko@gmail.com"
   git config --global user.name "Herdy Handoko"
+  git checkout master
 }
 
 commit_website_files() {
-  git checkout master
   echo "Adding untracked files."
-  git add -A docs
+  git add --all docs
   git status
-  git commit --message "Update docs (build: $TRAVIS_BUILD_NUMBER)"
+  git commit --message "Update docs (Travis build: ${TRAVIS_BUILD_NUMBER})" --message "See https://travis-ci.org/hhandoko/diskusi/builds/${TRAVIS_BUILD_ID}"
 }
 
 upload_files() {
