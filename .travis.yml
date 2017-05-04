@@ -54,7 +54,7 @@ install:
   - mix local.hex --force
   - mix deps.get
   - npm install
-  - cd test/elm && ../../node_modules/elm/binwrappers/elm-package install; cd ../..
+  - cd test/elm && ../../node_modules/elm/binwrappers/elm-package install -y; cd ../..
 
 # Create test database, copy test configuration, and compile before test
 # ~~~~~~
