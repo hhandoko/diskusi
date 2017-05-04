@@ -74,5 +74,7 @@ script:
 # Run ex_doc publishing after successful CI on `master`
 # ~~~~~~
 after_success:
-  - $TRAVIS_BRANCH == "master" && mix docs
-  - $TRAVIS_BRANCH == "master" && ./tools/travis/push.sh
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+      mix docs
+      ./tools/travis/push.sh
+    fi
