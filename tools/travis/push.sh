@@ -31,6 +31,7 @@ setup_git() {
 }
 
 commit_website_files() {
+  git checkout master
   echo "Adding untracked files."
   git add -A docs
   git status
