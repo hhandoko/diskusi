@@ -63,7 +63,7 @@ defmodule Diskusi.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:credo, "~> 0.5", only: [:dev, :test]},
      {:dialyxir, "~> 0.5", only: :dev, runtime: false},
-     {:ex_doc, "~> 0.14", only: :dev, runtime: false},
+     {:ex_doc, "~> 0.14", only: [:dev, :test], runtime: false},
      {:ex_machina, "~> 2.0", only: :test},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"}]
