@@ -24,6 +24,7 @@ defmodule Diskusi.CommentControllerTest do
   alias Diskusi.Comment
   alias Diskusi.CommentView
   alias Diskusi.ErrorView
+  alias Diskusi.SuccessView
 
   test "`GET /api/comments` renders a list comments" do
     comment  = insert(:comment)
@@ -64,6 +65,29 @@ defmodule Diskusi.CommentControllerTest do
 
     expected = json_response(conn, 404)
     response = render_json(ErrorView, "404.json", comment: comment)
+
+    assert expected == response
+  end
+
+  test "`POST /api/comments` create a new comment" do
+    comment  = %{author: "Alex Bell", text: "Hello World!"}
+    message  = "Comment added"
+    builder  = build_conn()
+    conn     = post(builder, comment_path(builder, :create, %{comment: comment}))
+
+    expected = json_response(conn, 201)
+    response = render_json(SuccessView, "201.json", %{message: message})
+
+    assert expected == response
+  end
+
+  test "`POST /api/comments` with missing fields renders validation error response" do
+    comment  = %{text: "Hello World!"}
+    builder  = build_conn()
+    conn     = post(builder, comment_path(builder, :create, %{comment: comment}))
+
+    expected = json_response(conn, 400)
+    response = render_json(ErrorView, "400.json", [])
 
     assert expected == response
   end

@@ -59,7 +59,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
   * `mix credo` to run Credo static analysis tool
   * `mix docs` to run ex_doc doc-comment documentation generator
 
-*NOTE: Run `mix do compile, dialyzer --plt` before running Dialyzer for the first time. It will build the PLT (Persistent Lookup Table) type information and may take a few minutes to complete.*
+*NOTE: Run `mix do deps.get, deps.compile, dialyzer --plt` before running Dialyzer for the first time. It will build the PLT (Persistent Lookup Table) type information and may take a few minutes to complete.*
 
 ## Contributing
 

@@ -39,6 +39,6 @@ defmodule Diskusi.Router do
   scope "/api", Diskusi do
     pipe_through :api
 
-    resources "/comments", CommentController, only: [:index, :show]
+    resources "/comments", CommentController, only: [:index, :show, :create]
   end
 end
