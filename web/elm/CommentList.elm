@@ -23,48 +23,31 @@ import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Decode exposing (..)
 
+import Comment.Types as T
+
 
 -- MODEL -----------------------------------------------------------------------
 
-
-type alias Model =
-  { author : String
-  , text : String
-  }
-
-
-type Msg
-  = NoOp
-  | FetchAll
-  | FetchAllHandler (Result Http.Error CommentResponse)
-
-
-type alias CommentResponse =
-  { success : Bool
-  , results : List Model
-  }
-
-
-emptyList : List Model
+emptyList : List T.Model
 emptyList =
   []
 
 
-commentResponseDecoder : Decode.Decoder CommentResponse
+commentResponseDecoder : Decode.Decoder T.FetchAllResponse
 commentResponseDecoder =
-  map2 CommentResponse
+  map2 T.FetchAllResponse
     (field "success" bool)
     (field "results" commentListDecoder)
 
 
-commentListDecoder : Decode.Decoder (List Model)
+commentListDecoder : Decode.Decoder (List T.Model)
 commentListDecoder =
   list commentDecoder
 
 
-commentDecoder : Decode.Decoder Model
+commentDecoder : Decode.Decoder T.Model
 commentDecoder =
-  map2 Model
+  map2 T.Model
     (field "author" string)
     (field "text" string)
 
@@ -72,19 +55,22 @@ commentDecoder =
 -- UPDATE ----------------------------------------------------------------------
 
 
-update : Msg -> List Model -> ( List Model, Cmd Msg )
+update : T.Msg -> List T.Model -> ( List T.Model, Cmd T.Msg )
 update msg model =
   case msg of
-    NoOp ->
+    T.NoOp ->
       ( model, Cmd.none )
 
-    FetchAll ->
+    T.FetchAll ->
       ( model, fetchAll )
 
-    FetchAllHandler ( Ok res ) ->
+    T.FetchAllHandler ( Ok res ) ->
       ( res.results, Cmd.none )
 
-    FetchAllHandler ( Err _ ) ->
+    T.FetchAllHandler ( Err _ ) ->
+      ( model, Cmd.none )
+
+    _ ->
       ( model, Cmd.none )
 
 
@@ -96,18 +82,18 @@ resourceUrl =
   "/api/comments"
 
 
-fetchAll : Cmd Msg
+fetchAll : Cmd T.Msg
 fetchAll =
   let
     request = Http.get resourceUrl commentResponseDecoder
   in
-    Http.send FetchAllHandler request
+    Http.send T.FetchAllHandler request
 
 
 -- VIEW ------------------------------------------------------------------------
 
 
-renderComment : Model -> Html a
+renderComment : T.Model -> Html a
 renderComment model =
   li []
     [ span [ class "comment" ]
@@ -117,12 +103,12 @@ renderComment model =
     ]
 
 
-view : List Model -> Html Msg
+view : List T.Model -> Html T.Msg
 view models =
   div [ class "comment-list" ]
     [ h4 []
         [ text "Comments "
-        , button [ onClick FetchAll, class "btn btn-default btn-xs" ] [ text "Refresh" ]
+        , button [ onClick T.FetchAll, class "btn btn-default btn-xs" ] [ text "Refresh" ]
         ]
     , ul [] <| List.map renderComment models
     ]

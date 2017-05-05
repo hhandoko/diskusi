@@ -22,6 +22,7 @@ import Html.Attributes exposing (class)
 
 import CommentForm exposing (..)
 import CommentList exposing (..)
+import Comment.Types as CT
 
 
 main =
@@ -37,15 +38,15 @@ main =
 
 
 type alias Model =
-  { form : CommentForm.Model
-  , comments : List CommentList.Model
+  { form : CT.Model
+  , comments : List CT.Model
   }
 
 
 type Msg
   = NoOp
-  | CommentFormMsg CommentForm.Msg
-  | CommentListMsg CommentList.Msg
+  | CommentFormMsg CT.Msg
+  | CommentListMsg CT.Msg
 
 
 init : ( Model, Cmd Msg )

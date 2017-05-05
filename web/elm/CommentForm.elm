@@ -24,50 +24,31 @@ import Http
 import Json.Decode as Decode
 import Json.Encode as Encode
 
+import Comment.Types as T
+
 
 -- MODEL -----------------------------------------------------------------------
 
 
-type alias Model =
-  { author : String
-  , text : String
-  }
-
-
-type Msg
-  = NoOp
-  | SetAuthor String
-  | SetText String
-  | KeyDown Int
-  | SubmitComment
-  | SubmitCommentHandler (Result Http.Error SubmitResponse)
-
-
-type alias SubmitResponse =
-  { success : Bool
-  , message : String
-  }
-
-
-emptyForm : Model
+emptyForm : T.Model
 emptyForm =
-  Model "" ""
+  T.Model "" ""
 
 
-submitResponseDecoder : Decode.Decoder SubmitResponse
-submitResponseDecoder =
-  Decode.map2 SubmitResponse
+postResponseDecoder : Decode.Decoder T.PostResponse
+postResponseDecoder =
+  Decode.map2 T.PostResponse
     (Decode.field "success" Decode.bool)
     (Decode.field "message" Decode.string)
 
 
-submitEncoder : Model -> Encode.Value
-submitEncoder model =
+postEncoder : T.Model -> Encode.Value
+postEncoder model =
   Encode.object
     [ ("comment", commentEncoder model) ]
 
 
-commentEncoder : Model -> Encode.Value
+commentEncoder : T.Model -> Encode.Value
 commentEncoder model =
   Encode.object
     [ ("author", Encode.string model.author)
@@ -78,29 +59,29 @@ commentEncoder model =
 -- UPDATE ----------------------------------------------------------------------
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : T.Msg -> T.Model -> ( T.Model, Cmd T.Msg )
 update msg model =
   case msg of
-    SetAuthor author ->
+    T.SetAuthor author ->
       ( { model | author = author }, Cmd.none )
 
-    SetText text ->
+    T.SetText text ->
       ( { model | text = text }, Cmd.none )
 
     {- On ENTER keydown -}
-    KeyDown key ->
+    T.KeyDown key ->
       if key == 13 then
         ( model, post model )
       else
         ( model, Cmd.none )
 
-    SubmitComment ->
+    T.Submit ->
       ( model, post model )
 
-    SubmitCommentHandler ( Ok res ) ->
-      ( Model "" "", Cmd.none )
+    T.SubmitHandler ( Ok res ) ->
+      ( T.Model "" "", Cmd.none )
 
-    SubmitCommentHandler ( Err _ ) ->
+    T.SubmitHandler ( Err _ ) ->
       ( model, Cmd.none )
 
     _ ->
@@ -121,19 +102,19 @@ resourceUrl =
   "/api/comments"
 
 
-post : Model -> Cmd Msg
+post : T.Model -> Cmd T.Msg
 post model =
   let
-    body    = model |> submitEncoder |> Http.jsonBody
-    request = Http.post resourceUrl body submitResponseDecoder
+    body    = model |> postEncoder |> Http.jsonBody
+    request = Http.post resourceUrl body postResponseDecoder
   in
-    Http.send SubmitCommentHandler request
+    Http.send T.SubmitHandler request
 
 
 -- VIEW ------------------------------------------------------------------------
 
 
-view : Model -> Html Msg
+view : T.Model -> Html T.Msg
 view model =
   div [ class "comment-form" ]
     [ div [ id "post_comment_form" ]
@@ -144,8 +125,8 @@ view model =
                 , class "form-control"
                 , type_ "text"
                 , Html.Attributes.value model.author
-                , onInput SetAuthor
-                , onKeyDown KeyDown
+                , onInput T.SetAuthor
+                , onKeyDown T.KeyDown
                 ] []
             ]
         , div [ class "form-group" ]
@@ -155,14 +136,14 @@ view model =
                 , class "form-control"
                 , rows 6
                 , Html.Attributes.value model.text
-                , onInput SetText
-                , onKeyDown KeyDown
+                , onInput T.SetText
+                , onKeyDown T.KeyDown
                 ] []
             ]
         , div [ class "form-group text-right" ]
             [ button
                 [ class "btn btn-primary"
-                , onClick SubmitComment
+                , onClick T.Submit
                 ] [ text "Submit" ]
             ]
         ]
