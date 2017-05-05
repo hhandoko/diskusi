@@ -38,7 +38,7 @@ node_js: 7
 env:
   global:
     - MIX_ENV=test
-    - PULL_REQUEST_ID=$TRAVIS_PULL_REQUEST
+    - PRONTO_PULL_REQUEST_ID=$TRAVIS_PULL_REQUEST
     - secure: "FkpdB8nXf3KsvViipNBUq2kwYtVlNnAlZSjJS2/IORLWIsUdWGbJ7ZXbfc8734Y/Vg4k7IfaJYu/NKGGoNA7ad8ZVnP8Bt8Wbw6BAYDzcmLA5oAPUuAblgE4rhSV8Jts7xttwVnm6L84dmUqHN8r3aDc+EDbGiQCeqLEkI39sc8OPvs+NqSe7118yK7vMwTJd8l0hEBzRt6Axg+vhIkog/g9kyGknwacncd7QslqraR+E+Gm3UD/abTITIazhywJIR9MbD9Nui9tOWCZCeZwM1x7cL/B+cyR8vA/rmX0XipAZ5mpNAkfBJeBbmCQCFoacj0+f52eZe6fstyjCHHWah3wHU6UokyBAeljOYq+Jja0obi1ufZQmjjqodTBNs22Fkl+OLffc4NhA/SfhRDmjUIkZsqJqQNDjHVBKD9pxxPbuW6ygR65JMz1/dhtUJUUuqQBlgKYl7ZWKNwdF+qM7nmyAkFK+46ux7dwVKuqGHoyml+Ik5B6uEEjMt0LoeQUiss0PoAqRnDtkCcZ77nI4IijFJLMvkFMt7AkGL+aBuu6kyGTbPtYEt0HOIi4TO0nkuY2o1Qwu5KVpGE5/f+rYNaWTsuLBNv9FBukFdp827Bu4Umtpr33JsIM/Y/eMKoUft9y2ExkS1SASQF7TVT6bDakEjaMg1c6q2OYLKdo22c="
     - secure: "iDHu3W/6o3QaRgK9EEnSr7W4JxecPBVBPBvRwtxweFrCMDd350vKAI3oVcFoteWzBAtDoqTdNH8poEmwytRU4vM0JP5VdKPoPpxy8AP2SP+5T9y1YSV6jfD4Cs3QEmBjUKseILlF0QYd8qKdmrAFqqLwQ0b7f0rJaz/wgVlZjxKTB+jhLSlV0S3l77VeqqZLf9voWJ6Jx+ecqIeFNKjaV7v5L/7B2zxfLNPed5WHhYXFFW6liJ2tU/xWaQqg8K4S6oTYbfk1iW0dnfCNfIusvdQf3jo3t0+FofX7sbEUHedJBK35NScatVWBBO0YZr6V4MeyuOZg/5nxs3rDPezzsNv1i8sANsg6fIM8guGuuDZZP+mmjpTpe0saQx1BKg4MrnMEpfkc7GlsK8YRfk51qTpnAl+0f3efdiYGjUG0/l/FbowesomJsPxywSNFM9h/Hgdx/fsUsfnEG+ZTgoRv+jfFPlfnHUzpwvWtUCNSUy3gZOGy80g1DtfP5/V0axZxdT+mPzNhL3osDp63fuNkRgG9NAcxyiIYzu3w8lJVhtWfRp5rmKg1TUJ3NxTBSwHXBApl01R2cXFcWesUC+HB818XHiz+v6GWyh3fI9m9zVu34wSqGDNQ7LQ7OJZ2ylxrvrNLM9DZ9/UaHfHgop/Hz3T4gyzp/CiJiZkhpldt7nI="
     - secure: "Ao0jDhSxKDfSUVQJnWS8VIUJ5RHiEvW3cIYcaSsmTpEz82vZQ8JULldx0ZqWePfzPb5SLzvLqV/XvupsRrJDxt8PZ8OLNfwDbRFZaejKTTu+gHfiFRvjXDc5QLoAo28cXp1huxcSAh4l+ZHBOcyDaXt45bDtxDGs7sJAaiLpUNLjO6fjcjXAWdOaRaoIXPUwvLQKeozFplUtQYKgTj9VjG+60jILYgUODX8aqNBP/8B6Z1huAkzXCYu43eADyyi3gh+PqiNXpEfA0SI0hOGqaABqD5j4nyQCec0kOsr4GpnEBVfrqPY2RjMIyMob5F6JJGxvSOZudIHIxf2fFfR0jUJLaPpqzO24+vEzchBuI3nW0PTfk0xoOTqko+/kmUe7SzsbMZiG0mM4cC4N9gSJStkR6sQ3yfqbsPzxJku+hvPAQfqqCr/fAJDKFSoyHPEHrwxzyhqigqwyCjr/TvZs9IgjJNwa739XTpET/ucTSEqwZVYfJZwmo63y9olKzAgEvC+YOalVUt4KaX+S+fodeaniJxw0CbxIIpovkViy6vn8PuKv+98n93wLTxXKU4XNsqV6NUxZQVwN7w6YUojwG0zTJo31R9YiFMroRUTS44ugiqlzyf5OOYlpWhy7Js5+Gy08fx2VtGWBf1goUWvnpdUBjlWm7z2zzmC7SO8OCSg="
@@ -78,13 +78,14 @@ script:
   - mix test
   - npm test
 
-# Run Credo analysis and ex_doc publishing after successful CI on `master`
+# Run Credo analysis on PRs and ex_doc publishing after successful `master` tests
 # ~~~~~~
 after_success:
-  - if [ $PULL_REQUEST_ID != false ]; then
+  - if [ $PRONTO_PULL_REQUEST_ID != false ]; then
       pronto run -f github_pr;
-    fi
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-      mix docs;
-      ./tools/travis/push.sh;
+    else
+       if [ "$TRAVIS_BRANCH" == "master" ]; then
+         mix docs;
+         ./tools/travis/push.sh;
+       fi
     fi
