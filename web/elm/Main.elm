@@ -20,6 +20,7 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (class)
 
+import CommentForm exposing (..)
 import CommentList exposing (..)
 
 
@@ -36,18 +37,24 @@ main =
 
 
 type alias Model =
-  { comments : List CommentList.Model
+  { form : CommentForm.Model
+  , comments : List CommentList.Model
   }
 
 
 type Msg
   = NoOp
+  | CommentFormMsg CommentForm.Msg
   | CommentListMsg CommentList.Msg
 
 
 init : ( Model, Cmd Msg )
 init =
-  ( { comments = CommentList.initialModel }, Cmd.map CommentListMsg CommentList.fetchAll )
+  let
+    form = CommentForm.emptyForm
+    comments = CommentList.emptyList
+  in
+    ( { form = form, comments = comments }, Cmd.map CommentListMsg CommentList.fetchAll )
 
 
 -- UPDATE ----------------------------------------------------------------------
@@ -56,12 +63,20 @@ init =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
+    CommentFormMsg formMsg ->
+      let
+        ( updatedModel, cmd ) =
+          CommentForm.update formMsg model.form
+      in
+        ( { model | form = updatedModel }, Cmd.map CommentFormMsg cmd )
+
     CommentListMsg commentMsg ->
       let
         ( updatedModel, cmd ) =
           CommentList.update commentMsg model.comments
       in
         ( { model | comments = updatedModel }, Cmd.map CommentListMsg cmd )
+
     _ ->
       ( model, Cmd.none )
 
@@ -80,5 +95,7 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
   div [ class "app" ]
-    [ map CommentListMsg <| CommentList.view model.comments
+    [ map CommentFormMsg <| CommentForm.view model.form
+    , hr [] []
+    , map CommentListMsg <| CommentList.view model.comments
     ]

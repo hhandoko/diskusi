@@ -22,14 +22,13 @@ import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Decode exposing (..)
-import Json.Encode
 
 
 -- MODEL -----------------------------------------------------------------------
 
 
 type alias Model =
-  { author: String
+  { author : String
   , text : String
   }
 
@@ -41,13 +40,20 @@ type Msg
 
 
 type alias CommentResponse =
-  { results : List Model
+  { success : Bool
+  , results : List Model
   }
+
+
+emptyList : List Model
+emptyList =
+  []
 
 
 commentResponseDecoder : Decode.Decoder CommentResponse
 commentResponseDecoder =
-  Decode.map CommentResponse
+  map2 CommentResponse
+    (field "success" bool)
     (field "results" commentListDecoder)
 
 
@@ -58,10 +64,9 @@ commentListDecoder =
 
 commentDecoder : Decode.Decoder Model
 commentDecoder =
-  Decode.map2 Model
+  map2 Model
     (field "author" string)
     (field "text" string)
-
 
 
 -- UPDATE ----------------------------------------------------------------------
@@ -81,11 +86,6 @@ update msg model =
 
     FetchAllHandler ( Err _ ) ->
       ( model, Cmd.none )
-
-
-initialModel : List Model
-initialModel =
-  []
 
 
 -- OPERATIONS ------------------------------------------------------------------
@@ -120,7 +120,9 @@ renderComment model =
 view : List Model -> Html Msg
 view models =
   div [ class "comment-list" ]
-    [ h2 [] [ text "Comments" ]
-    , button [ onClick FetchAll, class "btn btn-primary" ] [ text "Refresh" ]
+    [ h4 []
+        [ text "Comments "
+        , button [ onClick FetchAll, class "btn btn-default btn-xs" ] [ text "Refresh" ]
+        ]
     , ul [] <| List.map renderComment models
     ]

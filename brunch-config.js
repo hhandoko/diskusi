@@ -77,6 +77,8 @@ exports.config = {
       elmFolder: 'web/elm',
       executablePath: '../../node_modules/elm/binwrappers',
       mainModules: ['Main.elm'],
+      // Uncomment to enable event history for debugging
+      // makeParameters: ['--debug'],
       outputFolder: '..\/static\/js'
     }
   },
