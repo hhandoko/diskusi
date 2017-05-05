@@ -23,6 +23,7 @@ defmodule Diskusi.CommentController do
   use Diskusi.Web, :controller
   alias Diskusi.Comment
   alias Diskusi.ErrorView
+  alias Diskusi.SuccessView
 
   @doc """
   GET `/api/comments`
@@ -52,6 +53,28 @@ defmodule Diskusi.CommentController do
         conn
         |> put_status(404)
         |> render(ErrorView, "404.json", %{})
+    end
+  end
+
+  @doc """
+  POST `/api/comments`
+
+  Returns a success response if comment is successfully created.
+  """
+  @spec create(Plug.Conn.t, map) :: Plug.Conn.t
+  def create(conn, %{"comment" => comment_params}) do
+    changeset = Comment.changeset(%Comment{}, comment_params)
+
+    if changeset.valid? do
+      Repo.insert(changeset)
+
+      conn
+      |> put_status(201)
+      |> render(SuccessView, "201.json", %{message: "Comment added"})
+    else
+      conn
+      |> put_status(400)
+      |> render(ErrorView, "400.json", changeset)
     end
   end
 end

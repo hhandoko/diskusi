@@ -22,9 +22,24 @@ defmodule Diskusi.Comment do
 
   use Diskusi.Web, :model
 
+  # NOTE: Disable dialyzer warnings for changeset
+  @dialyzer {:nowarn_function, changeset: 1}
+
   schema "comment" do
-    field :text
+    field :author, :string
+    field :text, :string
 
     timestamps()
+  end
+
+  @doc """
+  Creates a changeset based on the `model` and `params`.
+  If `params` are nil, an invalid changeset is returned
+  with no validation performed.
+  """
+  def changeset(model, params \\ :empty) do
+    model
+    |> cast(params, ~w(author text))
+    |> validate_required([:author, :text])
   end
 end

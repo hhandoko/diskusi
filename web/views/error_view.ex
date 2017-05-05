@@ -17,15 +17,22 @@
 ###
 defmodule Diskusi.ErrorView do
   @moduledoc """
-  Error view templates.
+  Error response view templates.
   """
 
   use Diskusi.Web, :view
 
   @doc """
-  Render 404 page not found error as HTML.
+  Render 400 bad request as JSON response.
   """
   @spec render(String.t, map) :: any
+  def render("400.json", assigns) do
+    %{success: false, errors: %{message: "Validation error"}}
+  end
+
+  @doc """
+  Render 404 page not found error as HTML.
+  """
   def render("404.html", _assigns) do
     "Page not found"
   end

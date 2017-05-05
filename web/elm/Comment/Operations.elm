@@ -1,5 +1,5 @@
 ------
--- File     : Main.elm
+-- File     : Comment/Operations.elm
 -- License  :
 --   Copyright (c) 2017 Herdy Handoko
 --
@@ -17,16 +17,33 @@
 ------
 
 
-port module Main exposing (..)
+module Comment.Operations exposing (..)
 
-import SampleTest
-import Test.Runner.Node exposing (run, TestProgram)
-import Json.Encode exposing (Value)
-
-
-main : TestProgram
-main =
-  run emit SampleTest.all
+import Http
+import Comment.Types as T
 
 
-port emit : ( String, Value ) -> Cmd msg
+resourceUrl : String
+resourceUrl =
+  "/api/comments"
+
+
+fetchAll : Cmd T.Msg
+fetchAll =
+  let
+    request =
+      Http.get resourceUrl T.commentResponseDecoder
+  in
+    Http.send T.FetchAllHandler request
+
+
+post : T.Model -> Cmd T.Msg
+post model =
+  let
+    body =
+      model |> T.postEncoder |> Http.jsonBody
+
+    request =
+      Http.post resourceUrl body T.postResponseDecoder
+  in
+    Http.send T.SubmitHandler request

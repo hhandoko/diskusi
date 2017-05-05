@@ -1,5 +1,5 @@
 ###
-# File     : comment_view.ex
+# File     : success_view.ex
 # License  :
 #   Copyright (c) 2017 Herdy Handoko
 #
@@ -15,44 +15,34 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 ###
-defmodule Diskusi.CommentView do
+defmodule Diskusi.SuccessView do
   @moduledoc """
-  Comment view template.
+  Success response view templates.
   """
 
   use Diskusi.Web, :view
 
   @doc """
-  All comments result JSON template.
+  Render 200 OK as JSON response.
   """
-  @spec render(String.t, map) :: map
-  def render("index.json", %{comments: comments}) do
-    %{
-      success: true,
-      results: Enum.map(comments, &comment_json/1)
-    }
+  @spec render(String.t, map) :: any
+  def render("200.json", _assigns) do
+    %{success: true}
   end
 
   @doc """
-  Single comment result JSON template.
+  Render 201 resource created as JSON response.
   """
-  def render("show.json", %{comment: comment}) do
-    %{
-      success: true,
-      result: comment_json(comment)
-    }
+  def render("201.json", %{:message => message}) do
+    %{success: true, message: message}
   end
 
   @doc """
-  Comment JSON model.
+  Success template fallback. Render 200 OK when no render clause matches
+  or no template is found.
   """
-  @spec comment_json(Diskusi.Comment.t) :: map
-  def comment_json(comment) do
-    %{
-      author: comment.author,
-      text: comment.text,
-      inserted_at: comment.inserted_at,
-      updated_at: comment.updated_at
-    }
+  # NOTE: typespec omitted due to dialyzer warnings on overlapping domains
+  def template_not_found(_template, assigns) do
+    render("200.json", assigns)
   end
 end

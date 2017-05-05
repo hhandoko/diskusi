@@ -24,37 +24,45 @@ defmodule Diskusi.ErrorViewTest do
 
   # Bring render/3 and render_to_string/3 for testing custom views
   import Phoenix.View
+  alias Diskusi.ErrorView
+
+  test "renders 400.json" do
+    expected = render_to_string(ErrorView, "400.json", [])
+    response = render_json_response("Validation error")
+
+    assert expected == response
+  end
 
   test "renders 404.html" do
-    expected = render_to_string(Diskusi.ErrorView, "404.html", [])
+    expected = render_to_string(ErrorView, "404.html", [])
     response = "Page not found"
 
     assert expected == response
   end
 
   test "renders 404.json" do
-    expected = render_to_string(Diskusi.ErrorView, "404.json", [])
+    expected = render_to_string(ErrorView, "404.json", [])
     response = render_json_response("Resource not found")
 
     assert expected == response
   end
 
   test "render 500.html" do
-    expected = render_to_string(Diskusi.ErrorView, "500.html", [])
+    expected = render_to_string(ErrorView, "500.html", [])
     response = "Internal server error"
 
     assert expected == response
   end
 
   test "renders 500.json" do
-    expected = render_to_string(Diskusi.ErrorView, "500.json", [])
+    expected = render_to_string(ErrorView, "500.json", [])
     response = render_json_response("Internal server error")
 
     assert expected == response
   end
 
   test "render any other" do
-    expected = render_to_string(Diskusi.ErrorView, "505.html", [])
+    expected = render_to_string(ErrorView, "505.html", [])
     response = "Internal server error"
 
     assert expected == response

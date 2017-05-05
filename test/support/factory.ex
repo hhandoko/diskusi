@@ -29,6 +29,7 @@ defmodule Diskusi.Factory do
   """
   def comment_factory do
     %Diskusi.Comment{
+      author: "Alex Bell",
       text: "Hello world!"
     }
   end

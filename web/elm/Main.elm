@@ -15,39 +15,60 @@
 --   See the License for the specific language governing permissions and
 --   limitations under the License.
 ------
+
+
 module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (class)
-
-import Comment exposing (..)
+import CommentForm exposing (..)
+import CommentList exposing (..)
+import Comment.Operations as CO
+import Comment.Types as CT
 
 
 main =
   program
     { init = init
     , update = update
-    , subscriptions = subscriptions
+    , subscriptions = \_ -> Sub.none
     , view = view
     }
+
 
 
 -- MODEL -----------------------------------------------------------------------
 
 
 type alias Model =
-  { comments : List Comment.Model
+  { form : CT.Model
+  , onEnter : Bool
+  , comments : List CT.Model
   }
 
 
 type Msg
   = NoOp
-  | CommentMsg Comment.Msg
+  | CommentFormMsg CT.Msg
+  | CommentListMsg CT.Msg
 
 
 init : ( Model, Cmd Msg )
 init =
-  ( { comments = Comment.initialModel }, Cmd.map CommentMsg Comment.fetchAll )
+  let
+    form =
+      CommentForm.emptyForm
+
+    comments =
+      CommentList.emptyList
+  in
+    ( { form = form
+      , onEnter = False
+      , comments = comments
+      }
+    , Cmd.map CommentListMsg CO.fetchAll
+    )
+
 
 
 -- UPDATE ----------------------------------------------------------------------
@@ -56,22 +77,40 @@ init =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    CommentMsg commentMsg ->
+    CommentFormMsg formMsg ->
+      case formMsg of
+        CT.ToggleOnEnter ->
+          let
+            ( updatedOnEnter, cmd ) =
+              CommentForm.update formMsg model.form model.onEnter
+          in
+            ( { model | onEnter = not model.onEnter }, Cmd.map CommentFormMsg cmd )
+
+        -- TODO: Should be replaced by List append once :create endpoint is able to return fully materialised Comment
+        CT.SubmitHandler (Ok _) ->
+          let
+            ( updatedModel, cmd ) =
+              CommentList.update CT.FetchAll model.comments
+          in
+            ( { model | form = CommentForm.emptyForm, comments = updatedModel }, Cmd.map CommentListMsg cmd )
+
+        _ ->
+          let
+            ( updatedModel, cmd ) =
+              CommentForm.update formMsg model.form model.onEnter
+          in
+            ( { model | form = updatedModel }, Cmd.map CommentFormMsg cmd )
+
+    CommentListMsg commentMsg ->
       let
         ( updatedModel, cmd ) =
-          Comment.update commentMsg model.comments
+          CommentList.update commentMsg model.comments
       in
-        ( { model | comments = updatedModel }, Cmd.map CommentMsg cmd )
+        ( { model | comments = updatedModel }, Cmd.map CommentListMsg cmd )
+
     _ ->
       ( model, Cmd.none )
 
-
--- SUBSCRIPTION ----------------------------------------------------------------
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-  Sub.none
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -80,5 +119,7 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
   div [ class "app" ]
-    [ map CommentMsg <| Comment.view model.comments
+    [ map CommentFormMsg <| CommentForm.view model.form
+    , hr [] []
+    , map CommentListMsg <| CommentList.view model.comments
     ]
