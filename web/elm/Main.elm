@@ -23,6 +23,7 @@ import Html exposing (..)
 import Html.Attributes exposing (class)
 import CommentForm exposing (..)
 import CommentList exposing (..)
+import Comment.Operations as CO
 import Comment.Types as CT
 
 
@@ -30,7 +31,7 @@ main =
   program
     { init = init
     , update = update
-    , subscriptions = subscriptions
+    , subscriptions = \_ -> Sub.none
     , view = view
     }
 
@@ -60,7 +61,7 @@ init =
     comments =
       CommentList.emptyList
   in
-    ( { form = form, comments = comments }, Cmd.map CommentListMsg CommentList.fetchAll )
+    ( { form = form, comments = comments }, Cmd.map CommentListMsg CO.fetchAll )
 
 
 
@@ -86,15 +87,6 @@ update msg model =
 
     _ ->
       ( model, Cmd.none )
-
-
-
--- SUBSCRIPTION ----------------------------------------------------------------
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-  Sub.none
 
 
 

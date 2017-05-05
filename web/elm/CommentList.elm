@@ -22,8 +22,7 @@ module CommentList exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
-import Http
-import Json.Decode as Decode exposing (..)
+import Comment.Operations as O
 import Comment.Types as T
 
 
@@ -33,25 +32,6 @@ import Comment.Types as T
 emptyList : List T.Model
 emptyList =
   []
-
-
-commentResponseDecoder : Decode.Decoder T.FetchAllResponse
-commentResponseDecoder =
-  map2 T.FetchAllResponse
-    (field "success" bool)
-    (field "results" commentListDecoder)
-
-
-commentListDecoder : Decode.Decoder (List T.Model)
-commentListDecoder =
-  list commentDecoder
-
-
-commentDecoder : Decode.Decoder T.Model
-commentDecoder =
-  map2 T.Model
-    (field "author" string)
-    (field "text" string)
 
 
 
@@ -65,7 +45,7 @@ update msg model =
       ( model, Cmd.none )
 
     T.FetchAll ->
-      ( model, fetchAll )
+      ( model, O.fetchAll )
 
     T.FetchAllHandler (Ok res) ->
       ( res.results, Cmd.none )
@@ -75,24 +55,6 @@ update msg model =
 
     _ ->
       ( model, Cmd.none )
-
-
-
--- OPERATIONS ------------------------------------------------------------------
-
-
-resourceUrl : String
-resourceUrl =
-  "/api/comments"
-
-
-fetchAll : Cmd T.Msg
-fetchAll =
-  let
-    request =
-      Http.get resourceUrl commentResponseDecoder
-  in
-    Http.send T.FetchAllHandler request
 
 
 

@@ -22,9 +22,8 @@ module CommentForm exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (class, for, id, rows, type_)
 import Html.Events exposing (keyCode, on, onClick, onInput)
-import Http
 import Json.Decode as Decode
-import Json.Encode as Encode
+import Comment.Operations as O
 import Comment.Types as T
 
 
@@ -34,27 +33,6 @@ import Comment.Types as T
 emptyForm : T.Model
 emptyForm =
   T.Model "" ""
-
-
-postResponseDecoder : Decode.Decoder T.PostResponse
-postResponseDecoder =
-  Decode.map2 T.PostResponse
-    (Decode.field "success" Decode.bool)
-    (Decode.field "message" Decode.string)
-
-
-postEncoder : T.Model -> Encode.Value
-postEncoder model =
-  Encode.object
-    [ ( "comment", commentEncoder model ) ]
-
-
-commentEncoder : T.Model -> Encode.Value
-commentEncoder model =
-  Encode.object
-    [ ( "author", Encode.string model.author )
-    , ( "text", Encode.string model.text )
-    ]
 
 
 
@@ -73,12 +51,12 @@ update msg model =
     {- On ENTER keydown -}
     T.KeyDown key ->
       if key == 13 then
-        ( model, post model )
+        ( model, O.post model )
       else
         ( model, Cmd.none )
 
     T.Submit ->
-      ( model, post model )
+      ( model, O.post model )
 
     T.SubmitHandler (Ok res) ->
       ( T.Model "" "", Cmd.none )
@@ -96,28 +74,7 @@ update msg model =
 
 onKeyDown : (Int -> msg) -> Attribute msg
 onKeyDown tagger =
-  on "keydown" (Decode.map tagger keyCode)
-
-
-
--- OPERATIONS ------------------------------------------------------------------
-
-
-resourceUrl : String
-resourceUrl =
-  "/api/comments"
-
-
-post : T.Model -> Cmd T.Msg
-post model =
-  let
-    body =
-      model |> postEncoder |> Http.jsonBody
-
-    request =
-      Http.post resourceUrl body postResponseDecoder
-  in
-    Http.send T.SubmitHandler request
+  on "keydown" <| Decode.map tagger keyCode
 
 
 
