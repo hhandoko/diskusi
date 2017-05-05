@@ -86,6 +86,13 @@ update msg model =
           in
             ( { model | onEnter = not model.onEnter }, Cmd.map CommentFormMsg cmd )
 
+        CT.SubmitHandler (Ok _) ->
+          let
+            ( updatedModel, cmd ) =
+              CommentList.update CT.FetchAll model.comments
+          in
+            ( { model | form = CommentForm.emptyForm, comments = updatedModel }, Cmd.map CommentListMsg cmd )
+
         _ ->
           let
             ( updatedModel, cmd ) =
