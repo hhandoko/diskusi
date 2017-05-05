@@ -15,6 +15,8 @@
 --   See the License for the specific language governing permissions and
 --   limitations under the License.
 ------
+
+
 module CommentForm exposing (..)
 
 import Html exposing (..)
@@ -23,7 +25,6 @@ import Html.Events exposing (keyCode, on, onClick, onInput)
 import Http
 import Json.Decode as Decode
 import Json.Encode as Encode
-
 import Comment.Types as T
 
 
@@ -45,15 +46,16 @@ postResponseDecoder =
 postEncoder : T.Model -> Encode.Value
 postEncoder model =
   Encode.object
-    [ ("comment", commentEncoder model) ]
+    [ ( "comment", commentEncoder model ) ]
 
 
 commentEncoder : T.Model -> Encode.Value
 commentEncoder model =
   Encode.object
-    [ ("author", Encode.string model.author)
-    , ("text", Encode.string model.text)
+    [ ( "author", Encode.string model.author )
+    , ( "text", Encode.string model.text )
     ]
+
 
 
 -- UPDATE ----------------------------------------------------------------------
@@ -78,20 +80,24 @@ update msg model =
     T.Submit ->
       ( model, post model )
 
-    T.SubmitHandler ( Ok res ) ->
+    T.SubmitHandler (Ok res) ->
       ( T.Model "" "", Cmd.none )
 
-    T.SubmitHandler ( Err _ ) ->
+    T.SubmitHandler (Err _) ->
       ( model, Cmd.none )
 
     _ ->
       ( model, Cmd.none )
 
 
+
 {- See: http://stackoverflow.com/a/40114176 and http://package.elm-lang.org/packages/elm-community/html-extra/latest/Html-Events-Extra#onEnter -}
+
+
 onKeyDown : (Int -> msg) -> Attribute msg
 onKeyDown tagger =
   on "keydown" (Decode.map tagger keyCode)
+
 
 
 -- OPERATIONS ------------------------------------------------------------------
@@ -105,10 +111,14 @@ resourceUrl =
 post : T.Model -> Cmd T.Msg
 post model =
   let
-    body    = model |> postEncoder |> Http.jsonBody
-    request = Http.post resourceUrl body postResponseDecoder
+    body =
+      model |> postEncoder |> Http.jsonBody
+
+    request =
+      Http.post resourceUrl body postResponseDecoder
   in
     Http.send T.SubmitHandler request
+
 
 
 -- VIEW ------------------------------------------------------------------------
@@ -127,7 +137,8 @@ view model =
                 , Html.Attributes.value model.author
                 , onInput T.SetAuthor
                 , onKeyDown T.KeyDown
-                ] []
+                ]
+                []
             ]
         , div [ class "form-group" ]
             [ label [ for "text" ] [ text "Comment" ]
@@ -138,13 +149,15 @@ view model =
                 , Html.Attributes.value model.text
                 , onInput T.SetText
                 , onKeyDown T.KeyDown
-                ] []
+                ]
+                []
             ]
         , div [ class "form-group text-right" ]
             [ button
                 [ class "btn btn-primary"
                 , onClick T.Submit
-                ] [ text "Submit" ]
+                ]
+                [ text "Submit" ]
             ]
         ]
     ]

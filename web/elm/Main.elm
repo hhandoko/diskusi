@@ -15,11 +15,12 @@
 --   See the License for the specific language governing permissions and
 --   limitations under the License.
 ------
+
+
 module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (class)
-
 import CommentForm exposing (..)
 import CommentList exposing (..)
 import Comment.Types as CT
@@ -32,6 +33,7 @@ main =
     , subscriptions = subscriptions
     , view = view
     }
+
 
 
 -- MODEL -----------------------------------------------------------------------
@@ -52,10 +54,14 @@ type Msg
 init : ( Model, Cmd Msg )
 init =
   let
-    form = CommentForm.emptyForm
-    comments = CommentList.emptyList
+    form =
+      CommentForm.emptyForm
+
+    comments =
+      CommentList.emptyList
   in
     ( { form = form, comments = comments }, Cmd.map CommentListMsg CommentList.fetchAll )
+
 
 
 -- UPDATE ----------------------------------------------------------------------
@@ -82,12 +88,14 @@ update msg model =
       ( model, Cmd.none )
 
 
+
 -- SUBSCRIPTION ----------------------------------------------------------------
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
   Sub.none
+
 
 
 -- VIEW ------------------------------------------------------------------------

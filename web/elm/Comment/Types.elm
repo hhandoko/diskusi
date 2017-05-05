@@ -15,6 +15,8 @@
 --   See the License for the specific language governing permissions and
 --   limitations under the License.
 ------
+
+
 module Comment.Types exposing (..)
 
 import Http
@@ -40,10 +42,10 @@ type alias PostResponse =
 
 type Msg
   = NoOp
-  --
+    --
   | FetchAll
   | FetchAllHandler (Result Http.Error FetchAllResponse)
-  --
+    --
   | SetAuthor String
   | SetText String
   | KeyDown Int

@@ -15,6 +15,8 @@
 --   See the License for the specific language governing permissions and
 --   limitations under the License.
 ------
+
+
 module CommentList exposing (..)
 
 import Html exposing (..)
@@ -22,11 +24,11 @@ import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Decode exposing (..)
-
 import Comment.Types as T
 
 
 -- MODEL -----------------------------------------------------------------------
+
 
 emptyList : List T.Model
 emptyList =
@@ -52,6 +54,7 @@ commentDecoder =
     (field "text" string)
 
 
+
 -- UPDATE ----------------------------------------------------------------------
 
 
@@ -64,14 +67,15 @@ update msg model =
     T.FetchAll ->
       ( model, fetchAll )
 
-    T.FetchAllHandler ( Ok res ) ->
+    T.FetchAllHandler (Ok res) ->
       ( res.results, Cmd.none )
 
-    T.FetchAllHandler ( Err _ ) ->
+    T.FetchAllHandler (Err _) ->
       ( model, Cmd.none )
 
     _ ->
       ( model, Cmd.none )
+
 
 
 -- OPERATIONS ------------------------------------------------------------------
@@ -85,9 +89,11 @@ resourceUrl =
 fetchAll : Cmd T.Msg
 fetchAll =
   let
-    request = Http.get resourceUrl commentResponseDecoder
+    request =
+      Http.get resourceUrl commentResponseDecoder
   in
     Http.send T.FetchAllHandler request
+
 
 
 -- VIEW ------------------------------------------------------------------------

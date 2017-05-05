@@ -15,6 +15,8 @@
 --   See the License for the specific language governing permissions and
 --   limitations under the License.
 ------
+
+
 port module Main exposing (..)
 
 import SampleTest
@@ -24,7 +26,7 @@ import Json.Encode exposing (Value)
 
 main : TestProgram
 main =
-    run emit SampleTest.all
+  run emit SampleTest.all
 
 
 port emit : ( String, Value ) -> Cmd msg
