@@ -20,7 +20,7 @@
 module CommentForm exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (class, for, id, rows, type_)
+import Html.Attributes exposing (class, for, id, rows, style, type_)
 import Html.Events exposing (keyCode, on, onClick, onInput)
 import Json.Decode as Decode
 import Comment.Operations as O
@@ -113,9 +113,14 @@ view model =
                 []
             ]
         , div [ class "form-group text-right" ]
-            [ div [ class "checkbox pull-left" ]
+            [ div [ class "checkbox pull-left", style [ ( "margin-top", "7px" ) ] ]
                 [ label []
-                    [ input [ type_ "checkbox", onClick T.ToggleOnEnter ] []
+                    [ input
+                        [ type_ "checkbox"
+                        , style [ ( "margin-top", "2px" ) ]
+                        , onClick T.ToggleOnEnter
+                        ]
+                        []
                     , text "Submit on [ENTER]"
                     ]
                 ]
