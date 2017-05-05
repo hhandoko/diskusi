@@ -86,6 +86,7 @@ update msg model =
           in
             ( { model | onEnter = not model.onEnter }, Cmd.map CommentFormMsg cmd )
 
+        -- TODO: Should be replaced by List append once :create endpoint is able to return fully materialised Comment
         CT.SubmitHandler (Ok _) ->
           let
             ( updatedModel, cmd ) =
