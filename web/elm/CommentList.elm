@@ -1,5 +1,5 @@
 ------
--- File     : Comment.elm
+-- File     : CommentList.elm
 -- License  :
 --   Copyright (c) 2017 Herdy Handoko
 --
@@ -15,7 +15,7 @@
 --   See the License for the specific language governing permissions and
 --   limitations under the License.
 ------
-module Comment exposing (..)
+module CommentList exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (class)
@@ -111,8 +111,8 @@ renderComment : Model -> Html a
 renderComment model =
   li []
     [ span [ class "comment" ]
-        [ strong [] [ text model.author ++ " " ]
-        , text model.text
+        [ strong [] [ text model.author ]
+        , text <| " " ++ model.text
         ]
     ]
 

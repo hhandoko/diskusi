@@ -20,7 +20,7 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (class)
 
-import Comment exposing (..)
+import CommentList exposing (..)
 
 
 main =
@@ -36,18 +36,18 @@ main =
 
 
 type alias Model =
-  { comments : List Comment.Model
+  { comments : List CommentList.Model
   }
 
 
 type Msg
   = NoOp
-  | CommentMsg Comment.Msg
+  | CommentListMsg CommentList.Msg
 
 
 init : ( Model, Cmd Msg )
 init =
-  ( { comments = Comment.initialModel }, Cmd.map CommentMsg Comment.fetchAll )
+  ( { comments = CommentList.initialModel }, Cmd.map CommentListMsg CommentList.fetchAll )
 
 
 -- UPDATE ----------------------------------------------------------------------
@@ -56,12 +56,12 @@ init =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
-    CommentMsg commentMsg ->
+    CommentListMsg commentMsg ->
       let
         ( updatedModel, cmd ) =
-          Comment.update commentMsg model.comments
+          CommentList.update commentMsg model.comments
       in
-        ( { model | comments = updatedModel }, Cmd.map CommentMsg cmd )
+        ( { model | comments = updatedModel }, Cmd.map CommentListMsg cmd )
     _ ->
       ( model, Cmd.none )
 
@@ -80,5 +80,5 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
   div [ class "app" ]
-    [ map CommentMsg <| Comment.view model.comments
+    [ map CommentListMsg <| CommentList.view model.comments
     ]
