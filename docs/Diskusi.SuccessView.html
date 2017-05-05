@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.15.0">
-    <title>Diskusi.PageView – Diskusi v0.0.1</title>
+    <title>Diskusi.SuccessView – Diskusi v0.0.1</title>
     <link rel="stylesheet" href="dist/app-f7824c48e6.css" />
     
     <script src="dist/sidebar_items-0e298754da.js"></script>
@@ -59,10 +59,10 @@
 
       <h1>
         <small class="visible-xs">Diskusi v0.0.1</small>
-        Diskusi.PageView
+        Diskusi.SuccessView
         
         
-          <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/page_view.ex#L18" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/success_view.ex#L18" title="View Source" class="view-source" rel="help">
             <i class="icon-code"></i>
           </a>
         
@@ -70,7 +70,7 @@
 
       
         <section id="moduledoc">
-          <p>Page view templates.</p>
+          <p>Success response view templates.</p>
 
         </section>
       
@@ -122,7 +122,7 @@
     <a href="#render/2">render(template, assigns \\ %{})</a>
   </div>
   
-    <div class="summary-synopsis"><p>Renders the given template locally</p>
+    <div class="summary-synopsis"><p>Render 201 resource created as JSON response</p>
 </div>
   
 </div>
@@ -131,9 +131,8 @@
     <a href="#template_not_found/2">template_not_found(template, assigns)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Callback invoked when no template is found.
-By default it raises but can be customized
-to render a particular template</p>
+    <div class="summary-synopsis"><p>Success template fallback. Render 200 OK when no render clause matches
+or no template is found</p>
 </div>
   
 </div>
@@ -164,7 +163,7 @@ to render a particular template</p>
     </a>
     <span class="signature">__phoenix_recompile__?()</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/page_view.ex#L18" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/success_view.ex#L18" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -184,7 +183,7 @@ to render a particular template</p>
     </a>
     <span class="signature">__resource__()</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/page_view.ex#L23" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/success_view.ex#L23" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -204,7 +203,7 @@ to render a particular template</p>
     </a>
     <span class="signature">__templates__()</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/page_view.ex#L18" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/success_view.ex#L18" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -226,15 +225,21 @@ to render a particular template</p>
     </a>
     <span class="signature">render(template, assigns \\ %{})</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/page_view.ex#L23" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/success_view.ex#L23" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
     
     
+      <div class="specs">
+        
+          <pre>render(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>, map) :: any</pre>
+        
+      </div>
+    
   </div>
   <section class="docstring">
-    <p>Renders the given template locally.</p>
+    <p>Render 201 resource created as JSON response.</p>
 
   </section>
 </div>
@@ -246,7 +251,7 @@ to render a particular template</p>
     </a>
     <span class="signature">template_not_found(template, assigns)</span>
     
-      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/page_view.ex#L23" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/hhandoko/diskusi/blob/master/web/views/success_view.ex#L45" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -260,9 +265,8 @@ to render a particular template</p>
     
   </div>
   <section class="docstring">
-    <p>Callback invoked when no template is found.
-By default it raises but can be customized
-to render a particular template.</p>
+    <p>Success template fallback. Render 200 OK when no render clause matches
+or no template is found.</p>
 
   </section>
 </div>
