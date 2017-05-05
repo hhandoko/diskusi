@@ -42,6 +42,7 @@ main =
 
 type alias Model =
   { form : CT.Model
+  , onEnter : Bool
   , comments : List CT.Model
   }
 
@@ -61,7 +62,12 @@ init =
     comments =
       CommentList.emptyList
   in
-    ( { form = form, comments = comments }, Cmd.map CommentListMsg CO.fetchAll )
+    ( { form = form
+      , onEnter = False
+      , comments = comments
+      }
+    , Cmd.map CommentListMsg CO.fetchAll
+    )
 
 
 
@@ -72,11 +78,20 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
     CommentFormMsg formMsg ->
-      let
-        ( updatedModel, cmd ) =
-          CommentForm.update formMsg model.form
-      in
-        ( { model | form = updatedModel }, Cmd.map CommentFormMsg cmd )
+      case formMsg of
+        CT.ToggleOnEnter ->
+          let
+            ( updatedOnEnter, cmd ) =
+              CommentForm.update formMsg model.form model.onEnter
+          in
+            ( { model | onEnter = not model.onEnter }, Cmd.map CommentFormMsg cmd )
+
+        _ ->
+          let
+            ( updatedModel, cmd ) =
+              CommentForm.update formMsg model.form model.onEnter
+          in
+            ( { model | form = updatedModel }, Cmd.map CommentFormMsg cmd )
 
     CommentListMsg commentMsg ->
       let

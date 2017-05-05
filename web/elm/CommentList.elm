@@ -41,9 +41,6 @@ emptyList =
 update : T.Msg -> List T.Model -> ( List T.Model, Cmd T.Msg )
 update msg model =
   case msg of
-    T.NoOp ->
-      ( model, Cmd.none )
-
     T.FetchAll ->
       ( model, O.fetchAll )
 

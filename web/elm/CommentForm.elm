@@ -39,8 +39,8 @@ emptyForm =
 -- UPDATE ----------------------------------------------------------------------
 
 
-update : T.Msg -> T.Model -> ( T.Model, Cmd T.Msg )
-update msg model =
+update : T.Msg -> T.Model -> Bool -> ( T.Model, Cmd T.Msg )
+update msg model onEnter =
   case msg of
     T.SetAuthor author ->
       ( { model | author = author }, Cmd.none )
@@ -50,7 +50,7 @@ update msg model =
 
     {- On ENTER keydown -}
     T.KeyDown key ->
-      if key == 13 then
+      if key == 13 && onEnter then
         ( model, O.post model )
       else
         ( model, Cmd.none )
@@ -59,7 +59,7 @@ update msg model =
       ( model, O.post model )
 
     T.SubmitHandler (Ok res) ->
-      ( T.Model "" "", Cmd.none )
+      ( emptyForm, Cmd.none )
 
     T.SubmitHandler (Err _) ->
       ( model, Cmd.none )
@@ -68,10 +68,13 @@ update msg model =
       ( model, Cmd.none )
 
 
+{-| Currently there are no native onEnter event, so the second best thing is to filter KeyDown event.
 
-{- See: http://stackoverflow.com/a/40114176 and http://package.elm-lang.org/packages/elm-community/html-extra/latest/Html-Events-Extra#onEnter -}
+    See:
+      - http://stackoverflow.com/a/40114176
+      - http://package.elm-lang.org/packages/elm-community/html-extra/latest/Html-Events-Extra#onEnter
 
-
+-}
 onKeyDown : (Int -> msg) -> Attribute msg
 onKeyDown tagger =
   on "keydown" <| Decode.map tagger keyCode
@@ -110,7 +113,13 @@ view model =
                 []
             ]
         , div [ class "form-group text-right" ]
-            [ button
+            [ div [ class "checkbox pull-left" ]
+                [ label []
+                    [ input [ type_ "checkbox", onClick T.ToggleOnEnter ] []
+                    , text "Submit on [ENTER]"
+                    ]
+                ]
+            , button
                 [ class "btn btn-primary"
                 , onClick T.Submit
                 ]
