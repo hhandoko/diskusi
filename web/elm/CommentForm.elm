@@ -32,8 +32,7 @@ import Comment.Types as T
 
 emptyForm : T.Model
 emptyForm =
-  T.Model "" ""
-
+  T.Model "" "" ""
 
 
 -- UPDATE ----------------------------------------------------------------------

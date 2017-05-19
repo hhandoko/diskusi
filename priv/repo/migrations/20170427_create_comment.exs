@@ -24,10 +24,13 @@ defmodule Diskusi.Repo.Migrations.CreateComment do
 
   def change do
     create table(:comment) do
+      add :ref, :uuid
       add :author, :string
       add :text, :string
 
       timestamps()
     end
+
+    create index(:comment, [:ref], unique: true)
   end
 end

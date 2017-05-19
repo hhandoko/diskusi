@@ -19,11 +19,11 @@
 
 module CommentList exposing (..)
 
+import Comment.Operations as O
+import Comment.Types as T
 import Html exposing (..)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
-import Comment.Operations as O
-import Comment.Types as T
 
 
 -- MODEL -----------------------------------------------------------------------

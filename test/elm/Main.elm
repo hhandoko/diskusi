@@ -19,9 +19,9 @@
 
 port module Main exposing (..)
 
-import SampleTest
-import Test.Runner.Node exposing (run, TestProgram)
 import Json.Encode exposing (Value)
+import SampleTest
+import Test.Runner.Node exposing (TestProgram, run)
 
 
 main : TestProgram

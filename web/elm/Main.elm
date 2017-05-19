@@ -19,12 +19,12 @@
 
 module Main exposing (..)
 
-import Html exposing (..)
-import Html.Attributes exposing (class)
-import CommentForm exposing (..)
-import CommentList exposing (..)
 import Comment.Operations as CO
 import Comment.Types as CT
+import CommentForm exposing (..)
+import CommentList exposing (..)
+import Html exposing (..)
+import Html.Attributes exposing (class)
 
 
 main =
@@ -62,12 +62,12 @@ init =
     comments =
       CommentList.emptyList
   in
-    ( { form = form
-      , onEnter = False
-      , comments = comments
-      }
-    , Cmd.map CommentListMsg CO.fetchAll
-    )
+  ( { form = form
+    , onEnter = False
+    , comments = comments
+    }
+  , Cmd.map CommentListMsg CO.fetchAll
+  )
 
 
 
@@ -84,7 +84,7 @@ update msg model =
             ( updatedOnEnter, cmd ) =
               CommentForm.update formMsg model.form model.onEnter
           in
-            ( { model | onEnter = not model.onEnter }, Cmd.map CommentFormMsg cmd )
+          ( { model | onEnter = not model.onEnter }, Cmd.map CommentFormMsg cmd )
 
         -- TODO: Should be replaced by List append once :create endpoint is able to return fully materialised Comment
         CT.SubmitHandler (Ok _) ->
@@ -92,21 +92,21 @@ update msg model =
             ( updatedModel, cmd ) =
               CommentList.update CT.FetchAll model.comments
           in
-            ( { model | form = CommentForm.emptyForm, comments = updatedModel }, Cmd.map CommentListMsg cmd )
+          ( { model | form = CommentForm.emptyForm, comments = updatedModel }, Cmd.map CommentListMsg cmd )
 
         _ ->
           let
             ( updatedModel, cmd ) =
               CommentForm.update formMsg model.form model.onEnter
           in
-            ( { model | form = updatedModel }, Cmd.map CommentFormMsg cmd )
+          ( { model | form = updatedModel }, Cmd.map CommentFormMsg cmd )
 
     CommentListMsg commentMsg ->
       let
         ( updatedModel, cmd ) =
           CommentList.update commentMsg model.comments
       in
-        ( { model | comments = updatedModel }, Cmd.map CommentListMsg cmd )
+      ( { model | comments = updatedModel }, Cmd.map CommentListMsg cmd )
 
     _ ->
       ( model, Cmd.none )

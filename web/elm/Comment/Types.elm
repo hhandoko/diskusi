@@ -28,14 +28,16 @@ import Json.Encode as Encode
 
 
 type alias Model =
-  { author : String
+  { ref : String
+  , author : String
   , text : String
   }
 
 
 commentDecoder : Decode.Decoder Model
 commentDecoder =
-  Decode.map2 Model
+  Decode.map3 Model
+    (Decode.field "ref" Decode.string)
     (Decode.field "author" Decode.string)
     (Decode.field "text" Decode.string)
 
@@ -43,7 +45,8 @@ commentDecoder =
 commentEncoder : Model -> Encode.Value
 commentEncoder model =
   Encode.object
-    [ ( "author", Encode.string model.author )
+    [ ( "ref", Encode.string model.ref )
+    , ( "author", Encode.string model.author )
     , ( "text", Encode.string model.text )
     ]
 

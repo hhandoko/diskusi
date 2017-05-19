@@ -29,10 +29,11 @@ defmodule Diskusi.CommentViewTest do
 
     expected = CommentView.comment_json(comment)
     response = %{
+                 ref: comment.ref,
                  author: comment.author,
                  text: comment.text,
-                 inserted_at: comment.inserted_at,
-                 updated_at: comment.updated_at
+                 created: comment.inserted_at,
+                 updated: comment.updated_at
                }
 
     assert expected == response

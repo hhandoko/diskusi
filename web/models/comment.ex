@@ -26,6 +26,7 @@ defmodule Diskusi.Comment do
   @dialyzer {:nowarn_function, changeset: 1}
 
   schema "comment" do
+    field :ref, Ecto.UUID, autogenerate: true
     field :author, :string
     field :text, :string
 

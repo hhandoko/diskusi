@@ -19,8 +19,8 @@
 
 module Comment.Operations exposing (..)
 
-import Http
 import Comment.Types as T
+import Http
 
 
 resourceUrl : String
@@ -34,7 +34,7 @@ fetchAll =
     request =
       Http.get resourceUrl T.commentResponseDecoder
   in
-    Http.send T.FetchAllHandler request
+  Http.send T.FetchAllHandler request
 
 
 post : T.Model -> Cmd T.Msg
@@ -46,4 +46,4 @@ post model =
     request =
       Http.post resourceUrl body T.postResponseDecoder
   in
-    Http.send T.SubmitHandler request
+  Http.send T.SubmitHandler request

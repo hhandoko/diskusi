@@ -49,10 +49,11 @@ defmodule Diskusi.CommentView do
   @spec comment_json(Diskusi.Comment.t) :: map
   def comment_json(comment) do
     %{
+      ref: comment.ref,
       author: comment.author,
       text: comment.text,
-      inserted_at: comment.inserted_at,
-      updated_at: comment.updated_at
+      created: comment.inserted_at,
+      updated: comment.updated_at
     }
   end
 end
