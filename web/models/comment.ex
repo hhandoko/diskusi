@@ -25,10 +25,16 @@ defmodule Diskusi.Comment do
   # NOTE: Disable dialyzer warnings for changeset
   @dialyzer {:nowarn_function, changeset: 1}
 
+  @fields ~w(ref author text level reply_to)
+
   schema "comment" do
-    field :ref, Ecto.UUID, autogenerate: true
+    field :ref,    Ecto.UUID, autogenerate: true
     field :author, :string
-    field :text, :string
+    field :text,   :string
+    field :level,  :integer
+
+    belongs_to :parent,  Diskusi.Comment, foreign_key: :reply_to
+    has_many   :replies, Diskusi.Comment, foreign_key: :reply_to
 
     timestamps()
   end
@@ -40,7 +46,9 @@ defmodule Diskusi.Comment do
   """
   def changeset(model, params \\ :empty) do
     model
-    |> cast(params, ~w(author text))
+    |> cast(params, @fields)
     |> validate_required([:author, :text])
+    |> validate_number(:level, greater_than_or_equal_to: 0)
+    |> foreign_key_constraint(:reply_to)
   end
 end

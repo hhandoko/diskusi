@@ -23,14 +23,16 @@ defmodule Diskusi.Repo.Migrations.CreateComment do
   use Ecto.Migration
 
   def change do
-    create table(:comment) do
-      add :ref, :uuid
-      add :author, :string
-      add :text, :string
+    create_if_not_exists table(:comment) do
+      add :ref,      :uuid,    null: false
+      add :author,   :string,  null: false
+      add :text,     :string,  null: false
+      add :level,    :integer, null: false, default: 0
+      add :reply_to, references(:comment, on_delete: :delete_all)
 
       timestamps()
     end
 
-    create index(:comment, [:ref], unique: true)
+    create_if_not_exists unique_index(:comment, [:ref])
   end
 end

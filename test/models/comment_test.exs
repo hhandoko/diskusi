@@ -22,6 +22,7 @@ defmodule Diskusi.CommentTest do
 
   use Diskusi.ModelCase
   alias Diskusi.Comment
+  alias Ecto.UUID
 
   @valid_attrs %{author: "Alex Bell", text: "Hello World!"}
 
@@ -31,7 +32,14 @@ defmodule Diskusi.CommentTest do
     assert changeset.valid?
   end
 
-  test "changeset is invalid if author is empty" do
+  test "valid changeset with provided `ref`" do
+    attr      = Map.put(@valid_attrs, :ref, UUID.generate())
+    changeset = Comment.changeset(%Comment{}, attr)
+
+    assert changeset.valid?
+  end
+
+  test "invalid changeset if `author` is empty" do
     invalid_attr = Map.delete(@valid_attrs, :author)
 
     expected     = {:author, "can't be blank"}
@@ -40,12 +48,37 @@ defmodule Diskusi.CommentTest do
     assert expected in result
   end
 
-  test "changeset is invalid if text is empty" do
+  test "invalid changeset if `text` is empty" do
     invalid_attr = Map.delete(@valid_attrs, :text)
 
     expected     = {:text, "can't be blank"}
     result       = errors_on(%Comment{}, invalid_attr)
 
     assert expected in result
+  end
+
+  test "valid changeset with provided `level`" do
+    attr      = Map.put(@valid_attrs, :level, 1)
+    changeset = Comment.changeset(%Comment{}, attr)
+
+    assert changeset.valid?
+  end
+
+  test "invalid changeset if `level` is a negative value" do
+    invalid_attr = Map.put(@valid_attrs, :level, -1)
+
+    expected     = {:level, "must be greater than or equal to 0"}
+    result       = errors_on(%Comment{}, invalid_attr)
+
+    assert expected in result
+  end
+
+  # NOTE: FK constraint validation happens only during `insert` or `update` invocation, so this changeset test will pass
+  #       regardless of the `reply_to` value (e.g. negative value) as long as it is an integer.
+  test "valid changeset with provided `reply_to`" do
+    attr      = Map.put(@valid_attrs, :reply_to, 1)
+    changeset = Comment.changeset(%Comment{}, attr)
+
+    assert changeset.valid?
   end
 end
