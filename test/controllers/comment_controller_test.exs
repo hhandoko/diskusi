@@ -69,8 +69,21 @@ defmodule Diskusi.CommentControllerTest do
     assert expected == response
   end
 
-  test "`POST /api/comments` create a new comment" do
+  test "`POST /api/comments` without reply_ref create a new parent comment" do
     comment  = %{author: "Alex Bell", text: "Hello World!"}
+    message  = "Comment added"
+    builder  = build_conn()
+    conn     = post(builder, comment_path(builder, :create, %{comment: comment}))
+
+    expected = json_response(conn, 201)
+    response = render_json(SuccessView, "201.json", %{message: message})
+
+    assert expected == response
+  end
+
+  test "`POST /api/comments` with valid reply_ref create a new reply comment" do
+    parent   = insert(:comment)
+    comment  = %{author: "Alex Bell", text: "Hello World!", reply_ref: parent.ref}
     message  = "Comment added"
     builder  = build_conn()
     conn     = post(builder, comment_path(builder, :create, %{comment: comment}))
@@ -83,6 +96,17 @@ defmodule Diskusi.CommentControllerTest do
 
   test "`POST /api/comments` with missing fields renders validation error response" do
     comment  = %{text: "Hello World!"}
+    builder  = build_conn()
+    conn     = post(builder, comment_path(builder, :create, %{comment: comment}))
+
+    expected = json_response(conn, 400)
+    response = render_json(ErrorView, "400.json", [])
+
+    assert expected == response
+  end
+
+  test "`POST /api/comments` with invalid reply_ref renders validation error response" do
+    comment  = %{author: "Alex Bell", text: "Hello World!", reply_ref: "00000000-0000-0000-0000-000000000000"}
     builder  = build_conn()
     conn     = post(builder, comment_path(builder, :create, %{comment: comment}))
 

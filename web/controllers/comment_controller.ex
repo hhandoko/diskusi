@@ -36,6 +36,7 @@ defmodule Diskusi.CommentController do
   @spec index(Plug.Conn.t, map) :: Plug.Conn.t
   def index(conn, _params) do
     comments = Repo.all(Comment)
+
     conn
     |> render("index.json", comments: comments)
   end
@@ -66,10 +67,11 @@ defmodule Diskusi.CommentController do
   """
   @spec create(Plug.Conn.t, map) :: Plug.Conn.t
   def create(conn, %{"comment" => comment_params}) do
-    changeset = Comment.changeset(%Comment{}, comment_params)
-    result    = success(changeset)
-                ~>> fn cs -> assert_changeset(cs) end
-                ~>> fn cs -> insert_changeset(cs) end
+    result = success(comment_params)
+             ~>> fn p  -> link_reply_to_id(p)  end
+             ~>> fn p  -> create_changeset(p)  end
+             ~>> fn cs -> assert_changeset(cs) end
+             ~>> fn cs -> insert_changeset(cs) end
 
     if success?(result) do
       conn
@@ -78,23 +80,57 @@ defmodule Diskusi.CommentController do
     else
       conn
       |> put_status(400)
-      |> render(ErrorView, "400.json", changeset)
+      |> render(ErrorView, "400.json", result)
     end
   end
 
+  # Link :reply_ref with :reply_to ID on %Comment{}.
+  #
+  # We try to capture three possible outcomes, but return a `success()` value regardless, as we would like to delegate
+  # validations at the changeset layer.
+  #
+  # For example, if :reply_ref is provided but no record is resolved, we return success with `reply_to: -1` which
+  # represents an invalid database PK. Calling `Repo.insert()` will throw an error since `foreign_key_constraint()` is
+  # enforced.
+  @spec link_reply_to_id(map) :: map
+  defp link_reply_to_id(comment_params) do
+    if Map.has_key?(comment_params, "reply_ref") do
+      id =
+        case Repo.get_by(Comment, ref: comment_params["reply_ref"]) do
+          %Comment{id: id} -> id
+          _                -> -1
+        end
+
+      comment_params
+      |> Map.put("reply_to", id)
+      |> success
+    else
+      comment_params
+      |> success
+    end
+  end
+
+  # Shorthand to create the changeset
+  @spec create_changeset(map) :: Ecto.Changeset.t
+  defp create_changeset(comment_params), do: success(Comment.changeset(%Comment{}, comment_params))
+
+  # Assert the changeset for field formatting and value bounds error.
   @spec assert_changeset(Ecto.Changeset.t) :: Ecto.Changeset.t
   defp assert_changeset(changeset) do
     case changeset.valid? do
-      true -> success(changeset)
-      _    -> error(changeset)
+      true -> changeset |> success
+      _    -> changeset |> error
     end
   end
 
+  # Insert / persist the changeset (record).
+  #
+  # We can expect an error since `foreign_key_constraint()` validation is only thrown during `Repo.insert()`.
   @spec insert_changeset(Ecto.Changeset.t) :: Ecto.Changeset.t
   defp insert_changeset(changeset) do
     case Repo.insert(changeset) do
-      {:ok, _}    -> success(changeset)
-      {:error, _} -> error(changeset)
+      {:ok, _}    -> changeset |> success
+      {:error, _} -> changeset |> error
     end
   end
 end
