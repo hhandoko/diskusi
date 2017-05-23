@@ -21,9 +21,12 @@ defmodule Diskusi.CommentController do
   """
 
   use Diskusi.Web, :controller
+  use Monad.Operators
   alias Diskusi.Comment
   alias Diskusi.ErrorView
   alias Diskusi.SuccessView
+  import Monad.Result, only: [success?: 1, success: 1, error: 1]
+
 
   @doc """
   GET `/api/comments`
@@ -64,10 +67,11 @@ defmodule Diskusi.CommentController do
   @spec create(Plug.Conn.t, map) :: Plug.Conn.t
   def create(conn, %{"comment" => comment_params}) do
     changeset = Comment.changeset(%Comment{}, comment_params)
+    result    = success(changeset)
+                ~>> fn cs -> assert_changeset(cs) end
+                ~>> fn cs -> insert_changeset(cs) end
 
-    if changeset.valid? do
-      Repo.insert(changeset)
-
+    if success?(result) do
       conn
       |> put_status(201)
       |> render(SuccessView, "201.json", %{message: "Comment added"})
@@ -75,6 +79,22 @@ defmodule Diskusi.CommentController do
       conn
       |> put_status(400)
       |> render(ErrorView, "400.json", changeset)
+    end
+  end
+
+  @spec assert_changeset(Ecto.Changeset.t) :: Ecto.Changeset.t
+  defp assert_changeset(changeset) do
+    case changeset.valid? do
+      true -> success(changeset)
+      _    -> error(changeset)
+    end
+  end
+
+  @spec insert_changeset(Ecto.Changeset.t) :: Ecto.Changeset.t
+  defp insert_changeset(changeset) do
+    case Repo.insert(changeset) do
+      {:ok, _}    -> success(changeset)
+      {:error, _} -> error(changeset)
     end
   end
 end

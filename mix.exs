@@ -61,12 +61,13 @@ defmodule Diskusi.Mixfile do
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 2.6"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
+     {:cowboy, "~> 1.0"},
      {:credo, "~> 0.5", only: [:dev, :test]},
      {:dialyxir, "~> 0.5", only: :dev, runtime: false},
      {:ex_doc, "~> 0.14", only: [:dev, :test], runtime: false},
      {:ex_machina, "~> 2.0", only: :test},
      {:gettext, "~> 0.11"},
-     {:cowboy, "~> 1.0"}]
+     {:monadex, "~> 1.1"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
