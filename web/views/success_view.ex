@@ -31,7 +31,7 @@ defmodule Diskusi.SuccessView do
   end
 
   @doc """
-  Render 201 resource created as JSON response.
+  Render (generic) 201 resource created as JSON response.
   """
   def render("201.json", %{:message => message}) do
     %{success: true, message: message}

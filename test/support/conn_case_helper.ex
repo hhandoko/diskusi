@@ -20,6 +20,23 @@ defmodule Diskusi.ConnCaseHelper do
   Controller test case helper functions.
   """
 
+  import NaiveDateTime
+
+  @doc """
+  Comment struct from JSON.
+  """
+  @spec comment_struct(map) :: Diskusi.Comment.t
+  def comment_struct(comment_json) do
+    %{
+      ref: comment_json["ref"],
+      author: comment_json["author"],
+      text: comment_json["text"],
+      level: comment_json["level"],
+      inserted_at: from_iso8601!(comment_json["created"]),
+      updated_at: from_iso8601!(comment_json["updated"])
+    }
+  end
+
   @doc """
   Render template for the given view as JSON.
   """

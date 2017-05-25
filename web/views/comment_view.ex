@@ -44,14 +44,28 @@ defmodule Diskusi.CommentView do
   end
 
   @doc """
+  Comment created response JSON template.
+  """
+  def render("created.json", %{message: message, comment: comment}) do
+    %{
+      success: true,
+      message: message,
+      result: comment_json(comment)
+    }
+  end
+
+  @doc """
   Comment JSON model.
   """
   @spec comment_json(Diskusi.Comment.t) :: map
   def comment_json(comment) do
+    level = if is_nil(comment.level), do: 0, else: comment.level
+
     %{
       ref: comment.ref,
       author: comment.author,
       text: comment.text,
+      level: level,
       created: comment.inserted_at,
       updated: comment.updated_at
     }

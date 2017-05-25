@@ -24,7 +24,6 @@ defmodule Diskusi.CommentControllerTest do
   alias Diskusi.Comment
   alias Diskusi.CommentView
   alias Diskusi.ErrorView
-  alias Diskusi.SuccessView
 
   test "`GET /api/comments` renders a list comments" do
     comment  = insert(:comment)
@@ -76,7 +75,8 @@ defmodule Diskusi.CommentControllerTest do
     conn     = post(builder, comment_path(builder, :create, %{comment: comment}))
 
     expected = json_response(conn, 201)
-    response = render_json(SuccessView, "201.json", %{message: message})
+    result   = comment_struct(expected["result"])
+    response = render_json(CommentView, "created.json", %{message: message, comment: result})
 
     assert expected == response
   end
@@ -89,7 +89,8 @@ defmodule Diskusi.CommentControllerTest do
     conn     = post(builder, comment_path(builder, :create, %{comment: comment}))
 
     expected = json_response(conn, 201)
-    response = render_json(SuccessView, "201.json", %{message: message})
+    result   = comment_struct(expected["result"])
+    response = render_json(CommentView, "created.json", %{message: message, comment: result})
 
     assert expected == response
   end

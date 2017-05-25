@@ -26,12 +26,14 @@ defmodule Diskusi.CommentViewTest do
 
   test "comment_json" do
     comment  = insert(:comment)
+    level    = if is_nil(comment.level), do: 0, else: comment.level
 
     expected = CommentView.comment_json(comment)
     response = %{
                  ref: comment.ref,
                  author: comment.author,
                  text: comment.text,
+                 level: level,
                  created: comment.inserted_at,
                  updated: comment.updated_at
                }
@@ -57,6 +59,20 @@ defmodule Diskusi.CommentViewTest do
     expected = CommentView.render("show.json", %{comment: comment})
     response = %{
                  success: true,
+                 result: CommentView.comment_json(comment)
+               }
+
+    assert expected == response
+  end
+
+  test "created.json" do
+    comment  = insert(:comment)
+    message  = "Comment added"
+
+    expected = CommentView.render("created.json", %{message: message, comment: comment})
+    response = %{
+                 success: true,
+                 message: message,
                  result: CommentView.comment_json(comment)
                }
 

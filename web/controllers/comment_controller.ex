@@ -24,7 +24,6 @@ defmodule Diskusi.CommentController do
   use Monad.Operators
   alias Diskusi.Comment
   alias Diskusi.ErrorView
-  alias Diskusi.SuccessView
   import Monad.Result, only: [success?: 1, success: 1, error: 1]
 
 
@@ -76,7 +75,7 @@ defmodule Diskusi.CommentController do
     if success?(result) do
       conn
       |> put_status(201)
-      |> render(SuccessView, "201.json", %{message: "Comment added"})
+      |> render("created.json", %{message: "Comment added", comment: result.value})
     else
       conn
       |> put_status(400)
@@ -92,7 +91,7 @@ defmodule Diskusi.CommentController do
   # For example, if :reply_ref is provided but no record is resolved, we return success with `reply_to: -1` which
   # represents an invalid database PK. Calling `Repo.insert()` will throw an error since `foreign_key_constraint()` is
   # enforced.
-  @spec link_reply_to_id(map) :: map
+  @spec link_reply_to_id(map) :: Monad.Result.t
   defp link_reply_to_id(comment_params) do
     if Map.has_key?(comment_params, "reply_ref") do
       id =
@@ -111,11 +110,11 @@ defmodule Diskusi.CommentController do
   end
 
   # Shorthand to create the changeset
-  @spec create_changeset(map) :: Ecto.Changeset.t
+  @spec create_changeset(map) :: Monad.Result.t
   defp create_changeset(comment_params), do: success(Comment.changeset(%Comment{}, comment_params))
 
   # Assert the changeset for field formatting and value bounds error.
-  @spec assert_changeset(Ecto.Changeset.t) :: Ecto.Changeset.t
+  @spec assert_changeset(Ecto.Changeset.t) :: Monad.Result.t
   defp assert_changeset(changeset) do
     case changeset.valid? do
       true -> changeset |> success
@@ -126,11 +125,11 @@ defmodule Diskusi.CommentController do
   # Insert / persist the changeset (record).
   #
   # We can expect an error since `foreign_key_constraint()` validation is only thrown during `Repo.insert()`.
-  @spec insert_changeset(Ecto.Changeset.t) :: Ecto.Changeset.t
+  @spec insert_changeset(Ecto.Changeset.t) :: Monad.Result.t
   defp insert_changeset(changeset) do
     case Repo.insert(changeset) do
-      {:ok, _}    -> changeset |> success
-      {:error, _} -> changeset |> error
+      {:ok, record} -> record |> success
+      {:error, _}   -> changeset |> error
     end
   end
 end
