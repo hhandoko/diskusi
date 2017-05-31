@@ -30,7 +30,7 @@ import Json.Encode as Encode
 
 
 type alias Model =
-  { ref : String
+  { ref : Uuid
   , author : String
   , text : String
   , level : Int
@@ -39,8 +39,12 @@ type alias Model =
   }
 
 
+type alias Uuid =
+  String
+
+
 type alias FormModel =
-  { reply_to : String
+  { reply_to : Uuid
   , author : String
   , text : String
   }
@@ -81,14 +85,16 @@ commentDecoder =
 type alias PostResponse =
   { success : Bool
   , message : String
+  , result : Model
   }
 
 
 postResponseDecoder : Decode.Decoder PostResponse
 postResponseDecoder =
-  Decode.map2 PostResponse
+  Decode.map3 PostResponse
     (Decode.field "success" Decode.bool)
     (Decode.field "message" Decode.string)
+    (Decode.field "result" commentDecoder)
 
 
 postEncoder : FormModel -> Encode.Value
