@@ -34,25 +34,15 @@ type alias Model =
   }
 
 
-commentDecoder : Decode.Decoder Model
-commentDecoder =
-  Decode.map3 Model
-    (Decode.field "ref" Decode.string)
-    (Decode.field "author" Decode.string)
-    (Decode.field "text" Decode.string)
-
-
-commentEncoder : Model -> Encode.Value
-commentEncoder model =
-  Encode.object
-    [ ( "ref", Encode.string model.ref )
-    , ( "author", Encode.string model.author )
-    , ( "text", Encode.string model.text )
-    ]
+type alias FormModel =
+  { reply_to : String
+  , author : String
+  , text : String
+  }
 
 
 
--- FETCH ALL RESPONSE ----------------------------------------------------------
+-- GET (FETCH ALL) RESPONSE ----------------------------------------------------------
 
 
 type alias FetchAllResponse =
@@ -66,6 +56,14 @@ commentResponseDecoder =
   Decode.map2 FetchAllResponse
     (Decode.field "success" Decode.bool)
     (Decode.field "results" <| Decode.list commentDecoder)
+
+
+commentDecoder : Decode.Decoder Model
+commentDecoder =
+  Decode.map3 Model
+    (Decode.field "ref" Decode.string)
+    (Decode.field "author" Decode.string)
+    (Decode.field "text" Decode.string)
 
 
 
@@ -85,10 +83,19 @@ postResponseDecoder =
     (Decode.field "message" Decode.string)
 
 
-postEncoder : Model -> Encode.Value
+postEncoder : FormModel -> Encode.Value
 postEncoder model =
   Encode.object
-    [ ( "comment", commentEncoder model ) ]
+    [ ( "comment", formModelEncoder model ) ]
+
+
+formModelEncoder : FormModel -> Encode.Value
+formModelEncoder model =
+  Encode.object
+    [ ( "reply_to", Encode.string model.reply_to )
+    , ( "author", Encode.string model.author )
+    , ( "text", Encode.string model.text )
+    ]
 
 
 

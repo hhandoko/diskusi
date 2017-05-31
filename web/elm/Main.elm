@@ -41,7 +41,7 @@ main =
 
 
 type alias Model =
-  { form : CT.Model
+  { form : CT.FormModel
   , onEnter : Bool
   , comments : List CT.Model
   }

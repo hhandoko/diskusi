@@ -19,26 +19,27 @@
 
 module CommentForm exposing (..)
 
+import Comment.Operations as O
+import Comment.Types as T
 import Html exposing (..)
 import Html.Attributes exposing (class, for, id, rows, style, type_)
 import Html.Events exposing (keyCode, on, onClick, onInput)
 import Json.Decode as Decode
-import Comment.Operations as O
-import Comment.Types as T
 
 
 -- MODEL -----------------------------------------------------------------------
 
 
-emptyForm : T.Model
+emptyForm : T.FormModel
 emptyForm =
-  T.Model "" "" ""
+  T.FormModel "" "" ""
+
 
 
 -- UPDATE ----------------------------------------------------------------------
 
 
-update : T.Msg -> T.Model -> Bool -> ( T.Model, Cmd T.Msg )
+update : T.Msg -> T.FormModel -> Bool -> ( T.FormModel, Cmd T.Msg )
 update msg model onEnter =
   case msg of
     T.SetAuthor author ->
@@ -83,7 +84,7 @@ onKeyDown tagger =
 -- VIEW ------------------------------------------------------------------------
 
 
-view : T.Model -> Html T.Msg
+view : T.FormModel -> Html T.Msg
 view model =
   div [ class "comment-form" ]
     [ div [ id "post_comment_form" ]

@@ -37,7 +37,7 @@ fetchAll =
   Http.send T.FetchAllHandler request
 
 
-post : T.Model -> Cmd T.Msg
+post : T.FormModel -> Cmd T.Msg
 post model =
   let
     body =
