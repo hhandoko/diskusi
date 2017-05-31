@@ -21,8 +21,9 @@ module CommentList exposing (..)
 
 import Comment.Operations as O
 import Comment.Types as T
+import Date.Format exposing (format)
 import Html exposing (..)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, style)
 import Html.Events exposing (onClick)
 
 
@@ -60,11 +61,17 @@ update msg model =
 
 renderComment : T.Model -> Html a
 renderComment model =
-  li []
-    [ span [ class "comment" ]
+  li [ style [ ( "margin-bottom", "20px" ) ] ]
+    [ div [ class "author" ]
         [ strong [] [ text model.author ]
-        , text <| " " ++ model.text
+        , small
+            [ class "text-muted"
+            , style [ ( "margin-left", "10px" ) ]
+            ]
+            [ text <| format "%d/%m/%Y" model.created ]
         ]
+    , div [ class "comment" ]
+        [ text <| " " ++ model.text ]
     ]
 
 

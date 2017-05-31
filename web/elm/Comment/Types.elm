@@ -19,8 +19,10 @@
 
 module Comment.Types exposing (..)
 
+import Date exposing (Date)
 import Http
 import Json.Decode as Decode
+import Json.Decode.Extra as DecodeX
 import Json.Encode as Encode
 
 
@@ -31,6 +33,9 @@ type alias Model =
   { ref : String
   , author : String
   , text : String
+  , level : Int
+  , created : Date
+  , updated : Date
   }
 
 
@@ -60,10 +65,13 @@ commentResponseDecoder =
 
 commentDecoder : Decode.Decoder Model
 commentDecoder =
-  Decode.map3 Model
+  Decode.map6 Model
     (Decode.field "ref" Decode.string)
     (Decode.field "author" Decode.string)
     (Decode.field "text" Decode.string)
+    (Decode.field "level" Decode.int)
+    (Decode.field "created" DecodeX.date)
+    (Decode.field "updated" DecodeX.date)
 
 
 
