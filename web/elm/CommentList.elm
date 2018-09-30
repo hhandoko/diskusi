@@ -21,6 +21,7 @@ module CommentList exposing (..)
 
 import Comment.Operations as O
 import Comment.Types as T
+import CommentForm as F exposing (..)
 import Date.Format exposing (format)
 import Html exposing (..)
 import Html.Attributes exposing (class, style)
@@ -40,29 +41,51 @@ emptyList =
 
 
 update : T.Msg -> List T.Model -> ( List T.Model, Cmd T.Msg )
-update msg model =
+update msg models =
   case msg of
+    T.ShowReplyForm ref ->
+      let
+        show model =
+          if model.ref == ref then
+            { model | show_reply_form = True }
+          else
+            model
+      in
+      ( List.map show models, Cmd.none )
+
     T.FetchAll ->
-      ( model, O.fetchAll )
+      ( models, O.fetchAll )
 
     T.FetchAllHandler (Ok res) ->
       ( res.results, Cmd.none )
 
     T.FetchAllHandler (Err _) ->
-      ( model, Cmd.none )
+      ( models, Cmd.none )
 
     _ ->
-      ( model, Cmd.none )
+      ( models, Cmd.none )
 
 
 
 -- VIEW ------------------------------------------------------------------------
 
 
-renderComment : T.Model -> Html a
+renderReply : T.Model -> Html T.Msg
+renderReply model =
+  if model.show_reply_form then
+    F.view (T.FormModel model.ref "" "")
+  else
+    div
+      [ style [ ( "margin-top", "10px" ) ] ]
+      [ button [ onClick (T.ShowReplyForm model.ref), class "btn btn-default btn-sm" ] [ text "Reply" ] ]
+
+
+renderComment : T.Model -> Html T.Msg
 renderComment model =
-  li [ style [ ( "margin-bottom", "20px" ) ] ]
-    [ div [ class "author" ]
+  li
+    [ style [ ( "margin-bottom", "20px" ) ] ]
+    [ div
+        [ class "author" ]
         [ strong [] [ text model.author ]
         , small
             [ class "text-muted"
@@ -70,15 +93,19 @@ renderComment model =
             ]
             [ text <| format "%d/%m/%Y" model.created ]
         ]
-    , div [ class "comment" ]
+    , div
+        [ class "comment" ]
         [ text <| " " ++ model.text ]
+    , renderReply model
     ]
 
 
 view : List T.Model -> Html T.Msg
 view models =
-  div [ class "comment-list" ]
-    [ h4 []
+  div
+    [ class "comment-list" ]
+    [ h4
+        []
         [ text "Comments "
         , button [ onClick T.FetchAll, class "btn btn-default btn-xs" ] [ text "Refresh" ]
         ]

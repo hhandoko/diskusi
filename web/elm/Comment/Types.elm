@@ -36,6 +36,7 @@ type alias Model =
   , level : Int
   , created : Date
   , updated : Date
+  , show_reply_form : Bool
   }
 
 
@@ -69,13 +70,14 @@ commentResponseDecoder =
 
 commentDecoder : Decode.Decoder Model
 commentDecoder =
-  Decode.map6 Model
+  Decode.map7 Model
     (Decode.field "ref" Decode.string)
     (Decode.field "author" Decode.string)
     (Decode.field "text" Decode.string)
     (Decode.field "level" Decode.int)
     (Decode.field "created" DecodeX.date)
     (Decode.field "updated" DecodeX.date)
+    (Decode.succeed False)
 
 
 
@@ -121,6 +123,8 @@ type Msg
     --
   | FetchAll
   | FetchAllHandler (Result Http.Error FetchAllResponse)
+    --
+  | ShowReplyForm Uuid
     --
   | SetAuthor String
   | SetText String
