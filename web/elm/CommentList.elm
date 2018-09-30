@@ -75,17 +75,20 @@ renderReply model =
   if model.show_reply_form then
     F.view (T.FormModel model.ref "" "")
   else
-    div
-      [ style [ ( "margin-top", "10px" ) ] ]
-      [ button [ onClick (T.ShowReplyForm model.ref), class "btn btn-default btn-sm" ] [ text "Reply" ] ]
+    div [ style [ ( "margin-top", "10px" ) ] ]
+      [ button
+          [ class "btn btn-default btn-sm"
+          , onClick (T.ShowReplyForm model.ref)
+          ]
+          [ text "Reply" ]
+      ]
 
 
 renderComment : T.Model -> Html T.Msg
 renderComment model =
   li
     [ style [ ( "margin-bottom", "20px" ) ] ]
-    [ div
-        [ class "author" ]
+    [ div [ class "author" ]
         [ strong [] [ text model.author ]
         , small
             [ class "text-muted"
@@ -93,8 +96,7 @@ renderComment model =
             ]
             [ text <| format "%d/%m/%Y" model.created ]
         ]
-    , div
-        [ class "comment" ]
+    , div [ class "comment" ]
         [ text <| " " ++ model.text ]
     , renderReply model
     ]
@@ -102,12 +104,14 @@ renderComment model =
 
 view : List T.Model -> Html T.Msg
 view models =
-  div
-    [ class "comment-list" ]
-    [ h4
-        []
+  div [ class "comment-list" ]
+    [ h4 []
         [ text "Comments "
-        , button [ onClick T.FetchAll, class "btn btn-default btn-xs" ] [ text "Refresh" ]
+        , button
+            [ class "btn btn-default btn-xs"
+            , onClick T.FetchAll
+            ]
+            [ text "Refresh" ]
         ]
     , ul [] <| List.map renderComment models
     ]
