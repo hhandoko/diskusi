@@ -113,18 +113,7 @@ view model =
                 []
             ]
         , div [ class "form-group text-right" ]
-            [ div [ class "checkbox pull-left", style [ ( "margin-top", "7px" ) ] ]
-                [ label []
-                    [ input
-                        [ type_ "checkbox"
-                        , style [ ( "margin-top", "2px" ) ]
-                        , onClick T.ToggleOnEnter
-                        ]
-                        []
-                    , text "Submit on [ENTER]"
-                    ]
-                ]
-            , button
+            [ button
                 [ class "btn btn-primary"
                 , onClick T.Submit
                 ]

@@ -129,6 +129,5 @@ type Msg
   | SetAuthor String
   | SetText String
   | KeyDown Int
-  | ToggleOnEnter
   | Submit
   | SubmitHandler (Result Http.Error PostResponse)

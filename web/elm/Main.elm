@@ -24,7 +24,8 @@ import Comment.Types as CT
 import CommentForm exposing (..)
 import CommentList exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, style, type_)
+import Html.Events exposing (onClick)
 
 
 main =
@@ -49,6 +50,8 @@ type alias Model =
 
 type Msg
   = NoOp
+  | ToggleOnEnter
+    --
   | CommentFormMsg CT.Msg
   | CommentListMsg CT.Msg
 
@@ -77,15 +80,11 @@ init =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
   case msg of
+    ToggleOnEnter ->
+      ( { model | onEnter = not model.onEnter }, Cmd.none )
+
     CommentFormMsg formMsg ->
       case formMsg of
-        CT.ToggleOnEnter ->
-          let
-            ( updatedOnEnter, cmd ) =
-              CommentForm.update formMsg model.form model.onEnter
-          in
-          ( { model | onEnter = not model.onEnter }, Cmd.map CommentFormMsg cmd )
-
         -- TODO: Should be replaced by List append once :create endpoint is able to return fully materialised Comment
         CT.SubmitHandler (Ok res) ->
           let
@@ -120,6 +119,19 @@ view : Model -> Html Msg
 view model =
   div [ class "app" ]
     [ map CommentFormMsg <| CommentForm.view model.form
+    , div [ class "clearfix"] []
+    , hr [] []
+    , div [ class "checkbox", style [ ( "margin-top", "7px" ) ] ]
+        [ label []
+            [ input
+                [ type_ "checkbox"
+                , style [ ( "margin-top", "2px" ) ]
+                , onClick ToggleOnEnter
+                ]
+                []
+            , text "Submit on [ENTER]"
+            ]
+        ]
     , hr [] []
     , map CommentListMsg <| CommentList.view model.comments
     ]
