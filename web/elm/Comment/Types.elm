@@ -29,7 +29,11 @@ import Json.Encode as Encode
 -- COMMENT (MODEL) -------------------------------------------------------------
 
 
-type alias Model =
+type alias Uuid =
+  String
+
+
+type alias ViewModel =
   { ref : Uuid
   , author : String
   , text : String
@@ -38,10 +42,6 @@ type alias Model =
   , updated : Date
   , show_reply_form : Bool
   }
-
-
-type alias Uuid =
-  String
 
 
 type alias FormModel =
@@ -57,7 +57,7 @@ type alias FormModel =
 
 type alias FetchAllResponse =
   { success : Bool
-  , results : List Model
+  , results : List ViewModel
   }
 
 
@@ -68,9 +68,9 @@ commentResponseDecoder =
     (Decode.field "results" <| Decode.list commentDecoder)
 
 
-commentDecoder : Decode.Decoder Model
+commentDecoder : Decode.Decoder ViewModel
 commentDecoder =
-  Decode.map7 Model
+  Decode.map7 ViewModel
     (Decode.field "ref" Decode.string)
     (Decode.field "author" Decode.string)
     (Decode.field "text" Decode.string)
@@ -87,7 +87,7 @@ commentDecoder =
 type alias PostResponse =
   { success : Bool
   , message : String
-  , result : Model
+  , result : ViewModel
   }
 
 

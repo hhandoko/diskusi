@@ -44,7 +44,7 @@ main =
 type alias Model =
   { form : CT.FormModel
   , onEnter : Bool
-  , comments : List CT.Model
+  , comments : List CT.ViewModel
   }
 
 

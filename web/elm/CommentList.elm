@@ -31,7 +31,7 @@ import Html.Events exposing (onClick)
 -- MODEL -----------------------------------------------------------------------
 
 
-emptyList : List T.Model
+emptyList : List T.ViewModel
 emptyList =
   []
 
@@ -40,7 +40,7 @@ emptyList =
 -- UPDATE ----------------------------------------------------------------------
 
 
-update : T.Msg -> List T.Model -> ( List T.Model, Cmd T.Msg )
+update : T.Msg -> List T.ViewModel -> ( List T.ViewModel, Cmd T.Msg )
 update msg models =
   case msg of
     T.ShowReplyForm ref ->
@@ -70,7 +70,7 @@ update msg models =
 -- VIEW ------------------------------------------------------------------------
 
 
-renderReply : T.Model -> Html T.Msg
+renderReply : T.ViewModel -> Html T.Msg
 renderReply model =
   if model.show_reply_form then
     F.view (T.FormModel model.ref "" "")
@@ -84,7 +84,7 @@ renderReply model =
       ]
 
 
-renderComment : T.Model -> Html T.Msg
+renderComment : T.ViewModel -> Html T.Msg
 renderComment model =
   li
     [ style [ ( "margin-bottom", "20px" ) ] ]
@@ -102,7 +102,7 @@ renderComment model =
     ]
 
 
-view : List T.Model -> Html T.Msg
+view : List T.ViewModel -> Html T.Msg
 view models =
   div [ class "comment-list" ]
     [ h4 []
