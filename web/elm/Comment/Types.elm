@@ -40,15 +40,22 @@ type alias ViewModel =
   , level : Int
   , created : Date
   , updated : Date
-  , show_reply_form : Bool
+  , viewState : ViewState
   }
 
 
 type alias FormModel =
-  { reply_to : Uuid
+  { replyTo : Uuid
   , author : String
   , text : String
   }
+
+
+type ViewState
+  = TopForm
+    --
+  | ReplyButton
+  | ReplyForm
 
 
 
@@ -77,7 +84,7 @@ commentDecoder =
     (Decode.field "level" Decode.int)
     (Decode.field "created" DecodeX.date)
     (Decode.field "updated" DecodeX.date)
-    (Decode.succeed False)
+    (Decode.succeed ReplyButton)
 
 
 
@@ -108,7 +115,7 @@ postEncoder model =
 formModelEncoder : FormModel -> Encode.Value
 formModelEncoder model =
   Encode.object
-    [ ( "reply_to", Encode.string model.reply_to )
+    [ ( "reply_to", Encode.string model.replyTo )
     , ( "author", Encode.string model.author )
     , ( "text", Encode.string model.text )
     ]
@@ -125,6 +132,7 @@ type Msg
   | FetchAllHandler (Result Http.Error FetchAllResponse)
     --
   | ShowReplyForm Uuid
+  | HideReplyForm Uuid
     --
   | SetAuthor String
   | SetText String

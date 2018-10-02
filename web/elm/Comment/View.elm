@@ -27,23 +27,12 @@ import Html.Attributes exposing (class, style)
 import Html.Events exposing (onClick)
 
 
--- MODEL -----------------------------------------------------------------------
-
-
-emptyList : List T.ViewModel
-emptyList =
-  []
-
-
-
 -- VIEW ------------------------------------------------------------------------
 
 
 viewReply : T.ViewModel -> Html T.Msg
 viewReply model =
-  if model.show_reply_form then
-    F.view (T.FormModel model.ref "" "")
-  else
+  if model.viewState == T.ReplyButton then
     div [ style [ ( "margin-top", "10px" ) ] ]
       [ button
           [ class "btn btn-default btn-sm"
@@ -51,6 +40,8 @@ viewReply model =
           ]
           [ text "Reply" ]
       ]
+  else
+    F.view (T.FormModel model.ref "" "")
 
 
 view : T.ViewModel -> Html T.Msg

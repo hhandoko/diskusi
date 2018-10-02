@@ -46,11 +46,22 @@ update msg models =
       let
         show model =
           if model.ref == ref then
-            { model | show_reply_form = True }
+            { model | viewState = T.ReplyForm }
           else
             model
       in
       ( List.map show models, Cmd.none )
+
+
+    T.HideReplyForm ref ->
+      let
+        hide model =
+          if model.ref == ref then
+            { model | viewState = T.ReplyButton }
+          else
+            model
+      in
+      ( List.map hide models, Cmd.none )
 
     T.FetchAll ->
       ( models, O.fetchAll )

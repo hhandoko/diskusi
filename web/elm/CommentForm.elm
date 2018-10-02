@@ -114,6 +114,12 @@ view model =
             ]
         , div [ class "form-group text-right" ]
             [ button
+                [ class "btn btn-default"
+                , style [ ( "margin-right", "10px" ) ]
+                , onClick ( T.HideReplyForm model.replyTo )
+                ]
+                [ text "Cancel" ]
+            , button 
                 [ class "btn btn-primary"
                 , onClick T.Submit
                 ]
