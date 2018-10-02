@@ -21,10 +21,9 @@ module CommentList exposing (..)
 
 import Comment.Operations as O
 import Comment.Types as T
-import CommentForm as F exposing (..)
-import Date.Format exposing (format)
+import Comment.View as V
 import Html exposing (..)
-import Html.Attributes exposing (class, style)
+import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 
 
@@ -70,38 +69,6 @@ update msg models =
 -- VIEW ------------------------------------------------------------------------
 
 
-renderReply : T.ViewModel -> Html T.Msg
-renderReply model =
-  if model.show_reply_form then
-    F.view (T.FormModel model.ref "" "")
-  else
-    div [ style [ ( "margin-top", "10px" ) ] ]
-      [ button
-          [ class "btn btn-default btn-sm"
-          , onClick (T.ShowReplyForm model.ref)
-          ]
-          [ text "Reply" ]
-      ]
-
-
-renderComment : T.ViewModel -> Html T.Msg
-renderComment model =
-  li
-    [ style [ ( "margin-bottom", "20px" ) ] ]
-    [ div [ class "author" ]
-        [ strong [] [ text model.author ]
-        , small
-            [ class "text-muted"
-            , style [ ( "margin-left", "10px" ) ]
-            ]
-            [ text <| format "%d/%m/%Y" model.created ]
-        ]
-    , div [ class "comment" ]
-        [ text <| " " ++ model.text ]
-    , renderReply model
-    ]
-
-
 view : List T.ViewModel -> Html T.Msg
 view models =
   div [ class "comment-list" ]
@@ -113,5 +80,5 @@ view models =
             ]
             [ text "Refresh" ]
         ]
-    , ul [] <| List.map renderComment models
+    , ul [] <| List.map V.view models
     ]
